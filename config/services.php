@@ -16,6 +16,19 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 use Symfony\UX\StimulusBundle\Helper\StimulusHelper;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 
+use SolidInvoice\Service\BrevoMailer;
+use Symfony\Component\DependencyInjection\Reference;
+
+return static function (ContainerConfigurator $container) {
+    $services = $container->services();
+    $parameters = $container->parameters();
+
+    // ... existing service definitions
+
+    $services->set(BrevoMailer::class)
+        ->arg('$brevoApiKey', '%env(BREVO_API_KEY)%');
+};
+
 return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters = $containerConfigurator->parameters();
 

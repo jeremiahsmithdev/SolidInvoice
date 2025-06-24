@@ -1,0 +1,12 @@
+<VirtualHost *:80>
+    ServerName symbiotek.com.au
+    DocumentRoot /root/SolidInvoice/public
+
+    <Directory /root/SolidInvoice/public>
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+    ErrorLog ${APACHE_LOG_DIR}/symbiotek_error.log
+    CustomLog ${APACHE_LOG_DIR}/symbiotek_access.log combined
+</VirtualHost>

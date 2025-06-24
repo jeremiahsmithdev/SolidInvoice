@@ -36,17 +36,15 @@ class PaymentType extends AbstractType
     private const STIMULUS_CONTROLLER = 'capture_payment';
 
     public function __construct(
-        private readonly ManagerRegistry $registry,
-        private readonly StimulusHelper $stimulusHelper,
-    ) {
-    }
+	    private readonly ManagerRegistry $registry
+	) {}
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $paymentMethodRepository = $this->registry->getRepository(PaymentMethod::class);
 
-        $attributes = $this->stimulusHelper->createStimulusAttributes();
-        $attributes->addTarget(self::STIMULUS_CONTROLLER, 'paymentMethod');
+        //$attributes = $this->stimulusHelper->createStimulusAttributes();
+        //$attributes->addTarget(self::STIMULUS_CONTROLLER, 'paymentMethod');
 
         $builder->add(
             'payment_method',
@@ -59,7 +57,7 @@ class PaymentType extends AbstractType
                 'constraints' => new Assert\NotBlank(),
                 'placeholder' => 'Choose Payment Method',
                 'choice_attr' => fn (PaymentMethod $paymentMethod) => ['data-offline' => $paymentMethod->isOffline()],
-                'attr' => $attributes->toArray(),
+                //'attr' => $attributes->toArray(),
             ]
         );
 
@@ -83,10 +81,10 @@ class PaymentType extends AbstractType
         );
 
         if (null !== $options['user']) {
-            $attributes = $this->stimulusHelper->createStimulusAttributes();
-            $attributes->addTarget(self::STIMULUS_CONTROLLER, 'captureOnline');
+            //$attributes = $this->stimulusHelper->createStimulusAttributes();
+            //$attributes->addTarget(self::STIMULUS_CONTROLLER, 'captureOnline');
 
-            $builder->add('capture_online', CheckboxType::class, ['data' => true, 'row_attr' => $attributes->toArray()]);
+            //$builder->add('capture_online', CheckboxType::class, ['data' => true, 'row_attr' => $attributes->toArray()]);
             $builder->add('reference', null, ['required' => false]);
             $builder->add('notes', TextareaType::class, ['required' => false]);
         }
@@ -94,12 +92,12 @@ class PaymentType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $attributes = $this->stimulusHelper->createStimulusAttributes();
-        $attributes->addController(self::STIMULUS_CONTROLLER);
+        //$attributes = $this->stimulusHelper->createStimulusAttributes();
+        //$attributes->addController(self::STIMULUS_CONTROLLER);
 
         $resolver->setRequired(['user', 'preferred_choices']);
         $resolver->setDefault('currency', null);
-        $resolver->setDefault('attr', $attributes->toArray());
+        //$resolver->setDefault('attr', $attributes->toArray());
         $resolver->setAllowedTypes('currency', ['null', Currency::class]);
     }
 
