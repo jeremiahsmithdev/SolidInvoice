@@ -12,22 +12,10 @@ declare(strict_types=1);
  */
 
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
+use SolidInvoice\Service\BrevoMailer;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\UX\StimulusBundle\Helper\StimulusHelper;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
-
-use SolidInvoice\Service\BrevoMailer;
-use Symfony\Component\DependencyInjection\Reference;
-
-return static function (ContainerConfigurator $container) {
-    $services = $container->services();
-    $parameters = $container->parameters();
-
-    // ... existing service definitions
-
-    $services->set(BrevoMailer::class)
-        ->arg('$brevoApiKey', '%env(BREVO_API_KEY)%');
-};
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters = $containerConfigurator->parameters();
@@ -60,6 +48,10 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->tag('monolog.processor', ['handler' => 'sentry']);
 
     $services = $containerConfigurator->services();
+
+    $services->set(BrevoMailer::class)
+        ->autowire()
+        ->arg('$brevoApiKey', '%env(BREVO_API_KEY)%');
 
     $services->alias(StimulusHelper::class, 'stimulus.helper');
 };
