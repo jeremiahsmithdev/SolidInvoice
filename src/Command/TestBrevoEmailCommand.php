@@ -5,17 +5,16 @@ declare(strict_types=1);
 namespace SolidInvoice\Command;
 
 use SolidInvoice\Service\BrevoMailer;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(name: 'app:test-brevo-email', description: 'Test sending email via Brevo API')]
 class TestBrevoEmailCommand extends Command
 {
-    protected static $defaultName = 'app:test-brevo-email';
-    protected static $defaultDescription = 'Test sending email via Brevo API';
-
     public function __construct(
         private readonly BrevoMailer $brevoMailer
     ) {

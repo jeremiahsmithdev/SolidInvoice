@@ -47,7 +47,7 @@ class SystemConfigTest extends TestCase
         $config = new SystemConfig(date(DATE_ATOM), $this->em->getRepository(Setting::class));
 
         self::assertSame([
-            'email/from_address' => 'no-reply@solidinvoice.co',
+            'email/from_address' => 'admin@symbiotek.com.au',
             'email/from_name' => 'SolidInvoice',
             'email/sending_options/provider' => null,
             'invoice/bcc_address' => null,

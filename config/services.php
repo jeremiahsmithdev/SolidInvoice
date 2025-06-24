@@ -53,5 +53,10 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autowire()
         ->arg('$brevoApiKey', '%env(BREVO_API_KEY)%');
 
+    $services->set(\SolidInvoice\Command\TestBrevoEmailCommand::class)
+        ->autowire()
+        ->autoconfigure()
+        ->tag('console.command');
+
     $services->alias(StimulusHelper::class, 'stimulus.helper');
 };
