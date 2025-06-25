@@ -16,6 +16,7 @@ use Exception;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 use SolidInvoice\PaymentBundle\Factory\PaymentFactories;
+use SolidInvoice\PaymentBundle\Form\Methods\BankTransfer;
 use SolidInvoice\PaymentBundle\Form\Type\PaymentMethodType;
 use SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -73,7 +74,7 @@ final class PaymentSettings extends AbstractController
             PaymentMethodType::class,
             $paymentMethod,
             [
-                'config' => $this->factories->getForm($factory),
+                'config' => $this->factories->getForm($this->method),
                 'internal' => $factory === 'offline',
             ]
         );

@@ -29,5 +29,8 @@ class SolidInvoicePaymentExtension extends Extension
     {
         $loader = new PhpFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->import('services/*.php');
+        
+        // Explicitly load bank_transfer service
+        $loader->load('services/bank_transfer.php');
     }
 }
