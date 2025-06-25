@@ -58,5 +58,10 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autoconfigure()
         ->tag('console.command');
 
+    $services->set(\SolidInvoice\Command\TestEmailCommand::class)
+        ->autowire()
+        ->autoconfigure()
+        ->tag('console.command');
+
     $services->alias(StimulusHelper::class, 'stimulus.helper');
 };
