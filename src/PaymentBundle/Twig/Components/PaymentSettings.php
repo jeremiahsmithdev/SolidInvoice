@@ -57,11 +57,16 @@ final class PaymentSettings extends AbstractController
         if (! $paymentMethod instanceof PaymentMethod) {
             $paymentMethod = new PaymentMethod();
             $paymentMethod->setGatewayName($this->method);
-            $paymentMethod->setGatewayName($this->method);
             $paymentMethod->setFactoryName($this->factories->getFactory($this->method));
             $paymentMethod->setInternal($this->factories->isOffline($this->method));
         } else {
-            $this->entityManager->refresh($paymentMethod);
+            // Only refresh if the entity is managed to avoid issues
+            if ($this->entityManager->contains($paymentMethod)) {
+                $this->entityManager->refresh($paymentMethod);
+            } else {
+                // Re-fetch the entity if it's detached
+                $paymentMethod = $this->repository->findOneBy(['gatewayName' => $this->method]);
+            }
         }
 
         return $paymentMethod;
@@ -93,12 +98,18 @@ final class PaymentSettings extends AbstractController
         /** @var PaymentMethod $paymentMethod */
         $paymentMethod = $this->getForm()->getData();
 
-        $paymentMethod->setGatewayName(
-            (new AsciiSlugger())
-                ->slug($paymentMethod->getName())
-                ->lower()
-                ->toString()
-        );
+        // Only set gateway name from slug if it's a new payment method and not a predefined gateway
+        if (!$paymentMethod->getId() && !in_array($this->method, ['bank_transfer', 'paypal_express_checkout', 'stripe_checkout', 'cash', 'credit', 'custom'], true)) {
+            $paymentMethod->setGatewayName(
+                (new AsciiSlugger())
+                    ->slug($paymentMethod->getName())
+                    ->lower()
+                    ->toString()
+            );
+        } elseif (!$paymentMethod->getId()) {
+            // For predefined gateways, use the method name as gateway name
+            $paymentMethod->setGatewayName($this->method);
+        }
 
         $entityManager->persist($paymentMethod);
         $entityManager->flush();

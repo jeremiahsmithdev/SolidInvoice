@@ -3,25 +3,44 @@
         <div class="card-header with-border">
             <h3 class="card-title">
                 {{ paymentMethod.name|default('Add New ' ~ this.method|humanize|title ~ ' Payment Method') }}
-                {% if paymentMethod.gatewayName == 'bank_transfer' %}
-                    <span style="color: red; font-size: 12px;">[DEBUG MODE ACTIVE]</span>
-                {% endif %}
             </h3>
         </div>
 
         <div class="card-body">
-            <div style="background: orange; padding: 10px; margin: 10px 0; border: 2px solid red;">
-                <strong>PaymentSettings Debug:</strong><br>
-                Gateway: "{{ paymentMethod.gatewayName }}"<br>
-                {# Method param: "{{ this.method }}"<br> #}
-                {# Factory: "{{ paymentMethod.factoryName }}"<br> #}
-                Config (getConfig): {{ paymentMethod.config|json_encode }}<br>
-                Config (raw): {{ attribute(paymentMethod, 'config')|json_encode }}<br>
-                Form children: {{ form.children|keys|join(', ') }}<br>
-                {% if form.config is defined %}
-                Config form data: {{ form.config.vars.value|json_encode }}
+            {% if paymentMethod.gatewayName == 'bank_transfer' %}
+                {% if paymentMethod.config is not empty %}
+                    <div class="alert alert-info">
+                        <h5><i class="icon fas fa-university"></i> Current Bank Transfer Details</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                {% if paymentMethod.config.bank_name is defined %}
+                                    <p><strong>Bank Name:</strong> {{ paymentMethod.config.bank_name }}</p>
+                                {% endif %}
+                                {% if paymentMethod.config.account_name is defined %}
+                                    <p><strong>Account Name:</strong> {{ paymentMethod.config.account_name }}</p>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                {% if paymentMethod.config.bsb is defined %}
+                                    <p><strong>BSB:</strong> {{ paymentMethod.config.bsb }}</p>
+                                {% endif %}
+                                {% if paymentMethod.config.account_number is defined %}
+                                    <p><strong>Account Number:</strong> {{ paymentMethod.config.account_number }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% if paymentMethod.config.reference_instructions is defined and paymentMethod.config.reference_instructions is not empty %}
+                            <p><strong>Reference Instructions:</strong> {{ paymentMethod.config.reference_instructions }}</p>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <div class="alert alert-warning">
+                        <h5><i class="icon fas fa-exclamation-triangle"></i> Bank Transfer Not Configured</h5>
+                        <p>Please fill in the bank transfer details below to enable this payment method.</p>
+                    </div>
                 {% endif %}
-            </div>
+                
+            {% endif %}
             {{ form_start(form, {
                 attr: {
                     'data-action': 'live#action:prevent',

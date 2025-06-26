@@ -67,7 +67,7 @@ return static function (PayumConfig $config, PaymentConfig $paymentConfig, Conta
     $paymentConfig
         ->gateways()
         ->name('bank_transfer')
-        ->factory('manual')
+        ->factory('offline')
         ->form(BankTransfer::class);
 
     $paymentConfig
