@@ -36,8 +36,8 @@ import (
 	// _ "github.com/dunglas/vulcain/caddy"
 )
 
-const appName = "SolidInvoice"
-const appDescription = "Simple and elegant invoicing solution"
+const appName = "Treesmith"
+const appDescription = "Quoting and invoices"
 const defaultPort = "8765"
 
 var rootCmd = &cobra.Command{
