@@ -45,7 +45,14 @@ class PaymentMethodType extends AbstractType
         }
 
         if (null !== $options['config']) {
-            $builder->add('config', $options['config']);
+            $builder->add(
+                'config',
+                $options['config'],
+                [
+                    'property_path' => 'config',
+                    'data_class' => null,
+                ]
+            );
         }
     }
 

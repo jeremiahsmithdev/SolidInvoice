@@ -41,7 +41,8 @@ final class PaymentSettings extends AbstractController
 
     public function __construct(
         private readonly PaymentFactories $factories,
-        private readonly PaymentMethodRepository $repository
+        private readonly PaymentMethodRepository $repository,
+        private readonly EntityManagerInterface $entityManager
     ) {
     }
 
@@ -59,15 +60,7 @@ final class PaymentSettings extends AbstractController
             $paymentMethod->setFactoryName($this->factories->getFactory($this->method));
             $paymentMethod->setInternal($this->factories->isOffline($this->method));
         } else {
-            // Debug: Force refresh from database
-            $this->repository->getEntityManager()->refresh($paymentMethod);
-            
-            // Additional debug: Check if there's a different record
-            $allBankTransfers = $this->repository->findBy(['gatewayName' => $this->method]);
-            error_log("Found " . count($allBankTransfers) . " bank transfer records");
-            foreach ($allBankTransfers as $i => $pm) {
-                error_log("Record $i: ID=" . $pm->getId() . ", Config=" . json_encode($pm->getConfig()));
-            }
+            $this->entityManager->refresh($paymentMethod);
         }
 
         return $paymentMethod;

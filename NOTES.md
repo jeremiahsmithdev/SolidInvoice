@@ -10,3 +10,7 @@ php bin/console doctrine:cache:clear-result
 # LOGS
 # Clear cache
 rm -rf /Users/admin/dev/Quoting/SolidInvoiceClone/var/cache/dev/twig/*
+
+# Database
+sqlite3 config/env/db/solidinvoice.db
+
