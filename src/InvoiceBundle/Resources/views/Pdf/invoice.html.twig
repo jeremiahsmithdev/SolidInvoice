@@ -10,7 +10,53 @@
 <html>
 <head>
     <style type="text/css">
-        {{ file(asset('static/pdf.css')) }}
+        /* Basic PDF styles - temporarily removed external CSS loading */
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+        }
+        
+        .row {
+            display: block;
+            width: 100%;
+        }
+        
+        .col-4, .col-6, .col-12 {
+            display: inline-block;
+            vertical-align: top;
+        }
+        
+        .col-4 {
+            width: 33.333%;
+        }
+        
+        .col-6 {
+            width: 50%;
+        }
+        
+        .col-12 {
+            width: 100%;
+        }
+        
+        .text-right {
+            text-align: right;
+        }
+        
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .table td, .table th {
+            padding: 8px;
+            border: 1px solid #ddd;
+        }
 
         @page {
             margin-top: 2.5cm;
