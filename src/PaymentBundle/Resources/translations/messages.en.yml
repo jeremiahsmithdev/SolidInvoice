@@ -54,5 +54,12 @@ payment:
     settings:
         password:
             hint: 'Keep this empty to keep the existing value'
+    bank_transfer:
+        title: 'Bank Transfer Details'
+        bank_name: 'Bank Name'
+        account_name: 'Account Name'
+        bsb: 'BSB'
+        account_number: 'Account Number'
+        reference_instructions: 'Payment Reference'
 
 payment_made: 'Payment has been received'

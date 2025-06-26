@@ -16,6 +16,7 @@ use Exception;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 use SolidInvoice\PaymentBundle\Factory\PaymentFactories;
+use SolidInvoice\PaymentBundle\Form\Methods\BankTransfer;
 use SolidInvoice\PaymentBundle\Form\Type\PaymentMethodType;
 use SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -54,8 +55,19 @@ final class PaymentSettings extends AbstractController
 
         if (! $paymentMethod instanceof PaymentMethod) {
             $paymentMethod = new PaymentMethod();
+            $paymentMethod->setGatewayName($this->method);
             $paymentMethod->setFactoryName($this->factories->getFactory($this->method));
             $paymentMethod->setInternal($this->factories->isOffline($this->method));
+        } else {
+            // Debug: Force refresh from database
+            $this->repository->getEntityManager()->refresh($paymentMethod);
+            
+            // Additional debug: Check if there's a different record
+            $allBankTransfers = $this->repository->findBy(['gatewayName' => $this->method]);
+            error_log("Found " . count($allBankTransfers) . " bank transfer records");
+            foreach ($allBankTransfers as $i => $pm) {
+                error_log("Record $i: ID=" . $pm->getId() . ", Config=" . json_encode($pm->getConfig()));
+            }
         }
 
         return $paymentMethod;
@@ -73,7 +85,7 @@ final class PaymentSettings extends AbstractController
             PaymentMethodType::class,
             $paymentMethod,
             [
-                'config' => $this->factories->getForm($factory),
+                'config' => $this->factories->getForm($this->method),
                 'internal' => $factory === 'offline',
             ]
         );

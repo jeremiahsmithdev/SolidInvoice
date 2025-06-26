@@ -15,6 +15,7 @@ use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 use SolidInvoice\PaymentBundle\Entity\SecurityToken;
 use SolidInvoice\PaymentBundle\Form\Methods\AuthorizeNetAim;
+use SolidInvoice\PaymentBundle\Form\Methods\BankTransfer;
 use SolidInvoice\PaymentBundle\Form\Methods\Be2billDirect;
 use SolidInvoice\PaymentBundle\Form\Methods\Be2billOffsite;
 use SolidInvoice\PaymentBundle\Form\Methods\KlarnaCheckout;
@@ -66,7 +67,8 @@ return static function (PayumConfig $config, PaymentConfig $paymentConfig, Conta
     $paymentConfig
         ->gateways()
         ->name('bank_transfer')
-        ->factory('offline');
+        ->factory('manual')
+        ->form(BankTransfer::class);
 
     $paymentConfig
         ->gateways()

@@ -230,14 +230,40 @@
             {% endblock %}
 
             {% block footer %}
-                {% if invoice.terms is not empty %}
-                    <div class="col-6">
-                        <strong>{{ 'invoice.terms'|trans }}</strong>
-                        <p class="text-muted well well-sm no-shadow">
-                            {{ invoice.terms|nl2br }}
-                        </p>
-                    </div>
-                {% endif %}
+                <div class="row">
+                    {% if invoice.terms is not empty %}
+                        <div class="col-6">
+                            <strong>{{ 'invoice.terms'|trans }}</strong>
+                            <p class="text-muted well well-sm no-shadow">
+                                {{ invoice.terms|nl2br }}
+                            </p>
+                        </div>
+                    {% endif %}
+                    
+                    {% set bankTransferConfig = payment_method_config('bank_transfer') %}
+                    {% if bankTransferConfig is not null %}
+                        <div class="col-6">
+                            <strong>{{ 'payment.bank_transfer.title'|trans }}</strong>
+                            <div class="text-muted well well-sm no-shadow">
+                                {% if bankTransferConfig.bank_name is defined %}
+                                    <p><strong>{{ 'payment.bank_transfer.bank_name'|trans }}:</strong> {{ bankTransferConfig.bank_name }}</p>
+                                {% endif %}
+                                {% if bankTransferConfig.account_name is defined %}
+                                    <p><strong>{{ 'payment.bank_transfer.account_name'|trans }}:</strong> {{ bankTransferConfig.account_name }}</p>
+                                {% endif %}
+                                {% if bankTransferConfig.bsb is defined %}
+                                    <p><strong>{{ 'payment.bank_transfer.bsb'|trans }}:</strong> {{ bankTransferConfig.bsb }}</p>
+                                {% endif %}
+                                {% if bankTransferConfig.account_number is defined %}
+                                    <p><strong>{{ 'payment.bank_transfer.account_number'|trans }}:</strong> {{ bankTransferConfig.account_number }}</p>
+                                {% endif %}
+                                {% if bankTransferConfig.reference_instructions is defined and bankTransferConfig.reference_instructions is not empty %}
+                                    <p><em>{{ bankTransferConfig.reference_instructions }}</em></p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
             {% endblock %}
         </div>
     </div>

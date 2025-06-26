@@ -40,8 +40,13 @@
             </div>
         </aside>
         <section class="col-9">
+            <div style="background: yellow; padding: 5px; margin: 5px;">
+                DEBUG: method = "{{ this.method }}"
+            </div>
             {% if this.method is not empty %}
                 <twig:PaymentSettings method="{{ this.method }}" />
+            {% else %}
+                <div>No method selected</div>
             {% endif %}
         </section>
     </section>

@@ -56,6 +56,18 @@ class PaymentExtension extends AbstractExtension
                 ->registry
                 ->getRepository(Invoice::class)
                 ->getTotalOutstandingForClient($client)),
+            new TwigFunction('payment_method_config', function (string $method): ?array {
+                $paymentMethod = $this
+                    ->registry
+                    ->getRepository(PaymentMethod::class)
+                    ->findOneBy(['gatewayName' => $method]);
+
+                if (null === $paymentMethod || !$paymentMethod->isEnabled()) {
+                    return null;
+                }
+
+                return $paymentMethod->getConfig();
+            }),
         ];
     }
 }
