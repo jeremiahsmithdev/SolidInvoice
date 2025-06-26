@@ -24,6 +24,17 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class PaymentMethodType extends AbstractType
 {
+    /**
+     * Builds the form.
+     *
+     * This method is called for each type in the hierarchy that is
+     * registered as a form type.
+     *
+     * @see FormTypeExtensionInterface::buildForm()
+     *
+     * @param FormBuilderInterface $builder The form builder.
+     * @param array<string, mixed> $options The options for this type.
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('name');
@@ -51,11 +62,17 @@ class PaymentMethodType extends AbstractType
                 [
                     'property_path' => 'config',
                     'data_class' => null,
+                    'allow_extra_fields' => true,
                 ]
             );
         }
     }
 
+    /**
+     * Configures the options for this type.
+     *
+     * @param OptionsResolver $resolver The resolver for the options.
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired(['config']);
@@ -77,6 +94,14 @@ class PaymentMethodType extends AbstractType
         );
     }
 
+    /**
+     * Returns the prefix of the template block name for this type.
+     *
+     * The block prefix defaults to the underscored short class name with
+     * the "Type" suffix removed (e.g. "UserProfileType" => "user_profile").
+     *
+     * @return string The prefix of the template block name
+     */
     public function getBlockPrefix(): string
     {
         return 'payment_methods';

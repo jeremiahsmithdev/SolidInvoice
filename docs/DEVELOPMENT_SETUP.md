@@ -6,11 +6,29 @@ This document outlines the steps to set up the development environment for Solid
 
 Before you begin, ensure you have the following installed:
 
-*   **Docker Desktop:** (or Docker Engine and Docker Compose) for running the application services
+*   **PHP 8.3+:** SolidInvoice requires PHP version 8.3 or later for optimal performance
+*   **Composer:** PHP dependency management tool
 *   **Bun:** JavaScript package manager (version 1.2.10+) for managing frontend dependencies
 *   **Git:** Version control system
+*   **Docker Desktop:** (Optional) For containerized development environment
 
-## Quick Start
+## Installation Options
+
+SolidInvoice can be installed in several ways depending on your needs:
+
+### Option 1: Docker (Recommended for Production)
+
+Getting started with SolidInvoice is quick and simple using Docker. The Docker image can be found at [Docker Hub](https://hub.docker.com/r/solidinvoice/solidinvoice/).
+
+### Option 2: Archived Package
+
+Download the latest release in either `zip` or `tar.gz` format from [GitHub Releases](https://github.com/SolidInvoice/SolidInvoice/releases). Extract the contents into your web server directory.
+
+### Option 3: Development Installation (Source Code)
+
+For developers who want to contribute or customize SolidInvoice:
+
+## Quick Start (Docker)
 
 1.  **Clone the Repository:**
 
@@ -146,30 +164,68 @@ Run PHP tests:
 docker-compose exec app bin/phpunit
 ```
 
-## Alternative Setup (Local Development)
+## Local Development Setup (Recommended for Development)
 
-If you prefer to run PHP locally instead of Docker:
+For development without Docker, follow the installation steps from the main README:
 
-1. **Requirements:**
-   - PHP 8.3+
-   - MySQL 8.0+ or PostgreSQL 13+
-   - Composer
-
-2. **Setup:**
+1. **Clone the repository:**
    ```bash
-   composer install
-   bun install
-   bun run build
-   
-   # Configure .env with local database
-   DATABASE_URL="mysql://user:pass@localhost:3306/solidinvoice"
-   
-   # Run migrations
-   php bin/console doctrine:migrations:migrate
-   
-   # Start development server
-   symfony server:start
+   git clone https://github.com/SolidInvoice/SolidInvoice.git
+   cd SolidInvoice
    ```
+
+2. **Install PHP dependencies:**
+   ```bash
+   # Get Composer if you don't have it
+   curl -s http://getcomposer.org/installer | php
+   
+   # Install dependencies
+   php composer.phar install
+   # or if Composer is globally installed:
+   composer install
+   ```
+
+3. **Install Node packages and compile assets:**
+   ```bash
+   bun install
+   bun run dev
+   ```
+
+4. **Configure environment:**
+   ```bash
+   cp .env.dist .env
+   # Edit .env with your database configuration
+   DATABASE_URL="mysql://user:pass@localhost:3306/solidinvoice"
+   ```
+
+5. **Setup database:**
+   ```bash
+   php bin/console doctrine:migrations:migrate
+   ```
+
+6. **Start development server:**
+   ```bash
+   # Local access only
+   php -S localhost:8000 -t public
+   
+   # Or for web access (if you have Symfony CLI)
+   symfony serve --no-tls --allow-http --allow-all-ip
+   
+   # Or for network access
+   php -S 0.0.0.0:8000 -t public
+   ```
+
+### Production Build
+
+For production environments:
+
+```bash
+# Build optimized assets
+bun run build
+
+# Optimize Composer autoloader
+composer install --no-dev --optimize-autoloader
+```
 
 ## Troubleshooting
 

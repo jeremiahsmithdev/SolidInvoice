@@ -75,17 +75,27 @@ class PaymentMethod implements GatewayConfigInterface, Stringable
     #[ORM\OneToMany(mappedBy: 'method', targetEntity: Payment::class, cascade: ['persist'])]
     private Collection $payments;
 
+    /**
+     * Constructor for PaymentMethod.
+     * Initializes the payments collection and disables the payment method by default.
+     */
     public function __construct()
     {
         $this->payments = new ArrayCollection();
         $this->disable();
     }
 
+    /**
+     * Get the unique identifier for the payment method.
+     */
     public function getId(): ?Ulid
     {
         return $this->id;
     }
 
+    /**
+     * Set the display name of the payment method.
+     */
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -93,18 +103,25 @@ class PaymentMethod implements GatewayConfigInterface, Stringable
         return $this;
     }
 
+    /**
+     * Get the display name of the payment method.
+     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
+    /**
+     * Get the unique gateway name (e.g., 'bank_transfer', 'paypal_express_checkout').
+     */
     public function getGatewayName(): ?string
     {
         return $this->gatewayName;
     }
 
     /**
-     * @param string $gatewayName
+     * Set the unique gateway name.
+     * @param string $gatewayName The unique identifier for the payment gateway.
      */
     public function setGatewayName($gatewayName): self
     {
@@ -114,7 +131,9 @@ class PaymentMethod implements GatewayConfigInterface, Stringable
     }
 
     /**
-     * @param array<string, string> $config
+     * Set the configuration array for the payment method.
+     * This array holds specific settings for each payment gateway (e.g., bank details for bank transfer).
+     * @param array<string, string> $config The configuration data.
      */
     public function setConfig(array $config): self
     {
@@ -124,7 +143,9 @@ class PaymentMethod implements GatewayConfigInterface, Stringable
     }
 
     /**
-     * @return ?array<string, string|null>
+     * Get the configuration array for the payment method.
+     * This array holds specific settings for each payment gateway.
+     * @return ?array<string, string|null> The configuration data.
      */
     public function getConfig(): ?array
     {
@@ -139,11 +160,17 @@ class PaymentMethod implements GatewayConfigInterface, Stringable
         return $config;
     }
 
+    /**
+     * Check if the payment method is for internal use only.
+     */
     public function isInternal(): bool
     {
         return $this->internal;
     }
 
+    /**
+     * Set whether the payment method is for internal use only.
+     */
     public function setInternal(bool $internal): self
     {
         $this->internal = $internal;
@@ -151,11 +178,17 @@ class PaymentMethod implements GatewayConfigInterface, Stringable
         return $this;
     }
 
+    /**
+     * Check if the payment method is enabled.
+     */
     public function isEnabled(): bool
     {
         return $this->enabled;
     }
 
+    /**
+     * Set whether the payment method is enabled.
+     */
     public function setEnabled(bool $enabled): self
     {
         $this->enabled = $enabled;
@@ -163,6 +196,9 @@ class PaymentMethod implements GatewayConfigInterface, Stringable
         return $this;
     }
 
+    /**
+     * Enable the payment method.
+     */
     public function enable(): self
     {
         $this->enabled = true;
@@ -170,6 +206,9 @@ class PaymentMethod implements GatewayConfigInterface, Stringable
         return $this;
     }
 
+    /**
+     * Disable the payment method.
+     */
     public function disable(): self
     {
         $this->enabled = false;
@@ -177,6 +216,9 @@ class PaymentMethod implements GatewayConfigInterface, Stringable
         return $this;
     }
 
+    /**
+     * Add a payment to this payment method.
+     */
     public function addPayment(Payment $payment): self
     {
         $this->payments[] = $payment;
@@ -184,6 +226,9 @@ class PaymentMethod implements GatewayConfigInterface, Stringable
         return $this;
     }
 
+    /**
+     * Remove a payment from this payment method.
+     */
     public function removePayment(Payment $payment): self
     {
         $this->payments->removeElement($payment);
@@ -192,20 +237,25 @@ class PaymentMethod implements GatewayConfigInterface, Stringable
     }
 
     /**
-     * @return Collection<int, Payment>
+     * Get the collection of payments associated with this method.
+     * @return Collection<int, Payment> The collection of payments.
      */
     public function getPayments(): Collection
     {
         return $this->payments;
     }
 
+    /**
+     * Get the factory name associated with this payment method.
+     */
     public function getFactoryName(): ?string
     {
         return $this->factoryName;
     }
 
     /**
-     * @param string $name
+     * Set the factory name for the payment method.
+     * @param string $name The factory name.
      */
     public function setFactoryName($name): self
     {
@@ -214,11 +264,17 @@ class PaymentMethod implements GatewayConfigInterface, Stringable
         return $this;
     }
 
+    /**
+     * Check if the payment method is an offline method.
+     */
     public function isOffline(): bool
     {
         return 'offline' === $this->factoryName;
     }
 
+    /**
+     * Returns the name of the payment method when cast to a string.
+     */
     public function __toString(): string
     {
         return $this->name;

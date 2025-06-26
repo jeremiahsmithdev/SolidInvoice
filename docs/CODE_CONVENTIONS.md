@@ -1,6 +1,14 @@
 # Code Conventions
 
-This document outlines the coding conventions and best practices to be followed when contributing to the SolidInvoiceClone project. Adhering to these conventions ensures code consistency, readability, and maintainability.
+This document outlines the coding conventions and best practices to be followed when contributing to SolidInvoice. Adhering to these conventions ensures code consistency, readability, and maintainability.
+
+## Contributing
+
+For information on contributing to the project, please refer to the [CONTRIBUTING](../CONTRIBUTING.md) file.
+
+## License
+
+SolidInvoice is licensed under the MIT license, an open-source software license. For detailed information, please consult the [LICENSE](../LICENSE) file.
 
 ## PHP (Symfony)
 

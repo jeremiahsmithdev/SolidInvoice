@@ -13,8 +13,8 @@
             <div style="background: orange; padding: 10px; margin: 10px 0; border: 2px solid red;">
                 <strong>PaymentSettings Debug:</strong><br>
                 Gateway: "{{ paymentMethod.gatewayName }}"<br>
-                Method param: "{{ this.method }}"<br>
-                Factory: "{{ paymentMethod.factoryName }}"<br>
+                {# Method param: "{{ this.method }}"<br> #}
+                {# Factory: "{{ paymentMethod.factoryName }}"<br> #}
                 Config (getConfig): {{ paymentMethod.config|json_encode }}<br>
                 Config (raw): {{ attribute(paymentMethod, 'config')|json_encode }}<br>
                 Form children: {{ form.children|keys|join(', ') }}<br>

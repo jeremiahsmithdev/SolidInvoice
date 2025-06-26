@@ -20,6 +20,15 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class BankTransfer extends AbstractType
 {
+    /**
+     * Builds the form for Bank Transfer payment method.
+     *
+     * This method defines the fields for collecting bank details such as bank name,
+     * account name, BSB, account number, and reference instructions.
+     *
+     * @param FormBuilderInterface $builder The form builder.
+     * @param array<string, mixed> $options The options for this type.
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add(
@@ -83,6 +92,11 @@ final class BankTransfer extends AbstractType
         );
     }
 
+    /**
+     * Returns the prefix of the template block name for this type.
+     *
+     * @return string The prefix of the template block name.
+     */
     public function getBlockPrefix(): string
     {
         return 'bank_transfer';

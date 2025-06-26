@@ -57,6 +57,7 @@ final class PaymentSettings extends AbstractController
         if (! $paymentMethod instanceof PaymentMethod) {
             $paymentMethod = new PaymentMethod();
             $paymentMethod->setGatewayName($this->method);
+            $paymentMethod->setGatewayName($this->method);
             $paymentMethod->setFactoryName($this->factories->getFactory($this->method));
             $paymentMethod->setInternal($this->factories->isOffline($this->method));
         } else {

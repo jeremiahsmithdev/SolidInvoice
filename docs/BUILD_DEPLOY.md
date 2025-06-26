@@ -42,6 +42,18 @@ Compiled assets include:
 
 SolidInvoice uses Docker for containerization with FrankenPHP as the application server.
 
+### Docker Hub Images
+
+SolidInvoice provides official Docker images available at [Docker Hub](https://hub.docker.com/r/solidinvoice/solidinvoice/):
+
+```bash
+# Pull the latest image
+docker pull solidinvoice/solidinvoice:latest
+
+# Run with Docker Compose
+docker-compose up -d
+```
+
 ### Current Docker Setup
 
 The current `docker-compose.yml` uses pre-built images:
@@ -78,7 +90,7 @@ The Docker build process includes:
 
 ## Application Serving with FrankenPHP
 
-SolidInvoiceClone uses FrankenPHP as its application server. FrankenPHP is a modern PHP application server built on top of Caddy, providing a performant and robust way to serve PHP applications.
+SolidInvoice uses FrankenPHP as its application server. FrankenPHP is a modern PHP application server built on top of Caddy, providing a performant and robust way to serve PHP applications.
 
 ### How it Works
 
