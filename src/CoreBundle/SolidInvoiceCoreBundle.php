@@ -21,7 +21,7 @@ final class SolidInvoiceCoreBundle extends Bundle
 {
     final public const VERSION = '2.4.0-dev';
 
-    final public const APP_NAME = 'SolidInvoice';
+    final public const APP_NAME = 'Treesmith';
 
     final public const NAMESPACE = __NAMESPACE__;
 

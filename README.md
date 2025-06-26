@@ -81,6 +81,17 @@ bun install
 bun run dev
 ```
 
+* start development server
+```bash
+php -S localhost:8000 -t public
+```
+
+- Or for web access
+```bash
+symfony serve --no-tls --allow-http --allow-all-ip
+# php -S 0.0.0.0:80 -t public
+```
+
 At this point, SolidInvoice should be fully functional.
 
 For production environments, follow these additional steps:
