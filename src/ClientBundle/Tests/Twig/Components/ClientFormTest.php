@@ -39,10 +39,9 @@ final class ClientFormTest extends LiveComponentTest
         $user = $this->getUser();
 
         $client = ClientFactory::createOne([
-            'name' => 'Foo Bar',
-            'vatNumber' => '12345',
-            'website' => 'https://example.com',
-            'currencyCode' => 'SBD',
+            'firstName' => 'Foo',
+            'lastName' => 'Bar',
+            'email' => 'foo@example.com',
             'company' => $this->company
         ])->_real();
 

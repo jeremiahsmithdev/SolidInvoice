@@ -14,7 +14,6 @@ namespace SolidInvoice\ClientBundle\Twig\Components;
 use Doctrine\ORM\EntityManagerInterface;
 use SolidInvoice\ClientBundle\Entity\Address;
 use SolidInvoice\ClientBundle\Entity\Client;
-use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\ClientBundle\Form\Type\ClientType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
@@ -39,7 +38,6 @@ class ClientForm extends AbstractController
         return $this->createForm(
             ClientType::class,
             $this->client ?? (new Client())
-                ->addContact(new Contact())
                 ->addAddress(new Address()),
             ['validation_groups' => ['Default', 'form']]
         );

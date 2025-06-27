@@ -17,29 +17,28 @@ use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Form\Type\ClientType;
 use SolidInvoice\ClientBundle\Form\Type\ContactDetailType;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
-use SolidInvoice\MoneyBundle\Form\Type\CurrencyType;
 use Symfony\Component\Form\PreloadedExtension;
 
 class ClientTypeTest extends FormTestCase
 {
     public function testSubmit(): void
     {
-        $company = $this->faker->company;
+        $firstName = $this->faker->firstName;
+        $lastName = $this->faker->lastName;
+        $email = $this->faker->email;
         $url = $this->faker->url;
-        $currencyCode = 'USD';
 
         $formData = [
-            'name' => $company,
-            'website' => $url,
-            'currencyCode' => $currencyCode,
-            'contacts' => [],
+            'firstName' => $firstName,
+            'lastName' => $lastName,
+            'email' => $email,
             'addresses' => [],
         ];
 
         $object = new Client();
-        $object->setName($company);
-        $object->setWebsite($url);
-        $object->setCurrencyCode($currencyCode);
+        $object->setFirstName($firstName);
+        $object->setLastName($lastName);
+        $object->setEmail($email);
 
         $this->assertFormData(ClientType::class, $formData, $object);
     }
@@ -51,7 +50,7 @@ class ClientTypeTest extends FormTestCase
     {
         return [
             // register the type instances with the PreloadedExtension
-            new PreloadedExtension([new ContactDetailType(), new CurrencyType('en')], []),
+            new PreloadedExtension([new ContactDetailType()], []),
         ];
     }
 }

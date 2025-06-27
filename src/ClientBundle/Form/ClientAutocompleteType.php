@@ -24,8 +24,8 @@ final class ClientAutocompleteType extends AbstractType
     {
         $resolver->setDefaults([
             'class' => Client::class,
-            'searchable_fields' => ['name'],
-            'choice_label' => 'name',
+            'searchable_fields' => ['firstName', 'lastName', 'email'],
+            'choice_label' => 'getName',
         ]);
     }
 

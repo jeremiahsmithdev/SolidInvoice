@@ -91,10 +91,10 @@ class ContactType implements Stringable
         return $this;
     }
 
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
+    // public function getName(): ?string
+    // {
+    //     return $this->name;
+    // }
 
     public function setRequired(bool $required): self
     {

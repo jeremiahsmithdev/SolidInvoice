@@ -19,17 +19,13 @@ use SolidInvoice\DataGridBundle\Grid;
 use SolidInvoice\DataGridBundle\GridBuilder\Action\EditAction;
 use SolidInvoice\DataGridBundle\GridBuilder\Action\ViewAction;
 use SolidInvoice\DataGridBundle\GridBuilder\Batch\BatchAction;
-use SolidInvoice\DataGridBundle\GridBuilder\Column\CurrencyColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\DateTimeColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\MoneyColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
-use SolidInvoice\DataGridBundle\GridBuilder\Column\UrlColumn;
-use SolidInvoice\DataGridBundle\GridBuilder\Filter\ChoiceFilter;
 use SolidInvoice\DataGridBundle\GridBuilder\Filter\DateRangeFilter;
 use SolidInvoice\DataGridBundle\GridBuilder\Query;
 use SolidInvoice\DataGridBundle\Source\ORMSource;
 use SolidInvoice\InvoiceBundle\Model\Graph;
-use Symfony\Component\Intl\Currencies;
 use Symfony\Component\Translation\TranslatableMessage;
 
 abstract class BaseClientGrid extends Grid
@@ -42,11 +38,12 @@ abstract class BaseClientGrid extends Grid
     public function columns(): array
     {
         return [
-            StringColumn::new('name'),
-            UrlColumn::new('website'),
-            CurrencyColumn::new('currencyCode')
-                ->label(new TranslatableMessage('Currency'))
-                ->filter(new ChoiceFilter('currencyCode', Currencies::getNames($this->locale))),
+            StringColumn::new('firstName')
+                ->label(new TranslatableMessage('First Name')),
+            StringColumn::new('lastName')
+                ->label(new TranslatableMessage('Last Name')),
+            StringColumn::new('email')
+                ->label(new TranslatableMessage('Email')),
             MoneyColumn::new('total')
                 ->label(new TranslatableMessage('Total Balance'))
                 ->sortable(false)

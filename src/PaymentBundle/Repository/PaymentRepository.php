@@ -170,7 +170,7 @@ class PaymentRepository extends ServiceEntityRepository
 
         $qb->addSelect(
             [
-                'c.name as client',
+                'CONCAT(c.firstName, \' \', COALESCE(c.lastName, \'\')) as client',
                 'c.id as client_id',
             ]
         )

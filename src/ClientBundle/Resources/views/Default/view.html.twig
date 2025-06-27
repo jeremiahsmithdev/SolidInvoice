@@ -12,7 +12,6 @@
 {% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
 
 {% block page_title %}
-    {{ client.name }}
 {% endblock page_title %}
 
 {% block content %}
@@ -23,7 +22,6 @@
             <div class="card card-primary">
                 <div class="card-body box-profile">
 
-                    <h3 class="profile-username text-center">{{ client.name }}</h3>
 
                     <p class="text-muted text-center">
                         <h4 class="text-center">{{ client_label(client.status) }}</h4>
@@ -43,24 +41,9 @@
 
                     <ul class="list-group list-group-unbordered">
 
-                        {% if client.website %}
+                        {% if client.email %}
                             <li class="list-group-item">
-                                <b>{{ icon('globe') }} {{ 'Website'|trans }}</b> <a href="{{ client.website }}" class="float-right" rel="external">{{ client.website }}</a>
-                                <small>{{ icon('external-link') }}</small>
-                            </li>
-                        {% endif %}
-
-                        {% if client.currency %}
-                            <li class="list-group-item">
-                                <b>{{ icon('money') }} {{ 'client.view.currency'|trans }}</b> <span class="float-right">
-                                    {{ client.currencyCode is empty ? 'System Default' : client.currencyCode }}
-                                </span>
-                            </li>
-                        {% endif %}
-
-                        {% if client.vatNumber is not empty %}
-                            <li class="list-group-item">
-                                <b>{{ 'tax.vat_number'|trans }}</b> <span class="float-right">{{ client.vatNumber }}</span>
+                                <b>{{ icon('envelope') }} {{ 'Email'|trans }}</b> <a href="mailto:{{ client.email }}" class="float-right">{{ client.email }}</a>
                             </li>
                         {% endif %}
 

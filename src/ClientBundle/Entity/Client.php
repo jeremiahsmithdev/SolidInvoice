@@ -66,10 +66,10 @@ use function in_array;
     ],
 )]
 #[ORM\Table(name: Client::TABLE_NAME)]
-#[ORM\UniqueConstraint(columns: ['name', 'company_id'])]
+#[ORM\UniqueConstraint(columns: ['email', 'company_id'])]
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-#[UniqueEntity('name')]
+#[UniqueEntity('email')]
 class Client implements Stringable
 {
     final public const TABLE_NAME = 'clients';
@@ -84,54 +84,33 @@ class Client implements Stringable
     #[Serialize\Groups(['client_api:read'])]
     private ?Ulid $id = null;
 
-    #[ApiProperty(iris: ['https://schema.org/name'])]
-    #[ORM\Column(name: 'name', type: Types::STRING, length: 125)]
+    #[ApiProperty(iris: ['https://schema.org/givenName'])]
+    #[ORM\Column(name: 'firstName', type: Types::STRING, length: 125)]
     #[Assert\NotBlank]
     #[Assert\Length(max: 125)]
     #[Serialize\Groups(['client_api:read', 'client_api:write'])]
-    private ?string $name = null;
+    private ?string $firstName = null;
 
-    #[ApiProperty(iris: ['https://schema.org/URL'])]
-    #[ORM\Column(name: 'website', type: Types::STRING, length: 125, nullable: true)]
-    #[Assert\Url]
+    #[ApiProperty(iris: ['https://schema.org/familyName'])]
+    #[ORM\Column(name: 'lastName', type: Types::STRING, length: 125, nullable: true)]
     #[Assert\Length(max: 125)]
     #[Serialize\Groups(['client_api:read', 'client_api:write'])]
-    private ?string $website = null;
+    private ?string $lastName = null;
+
+    #[ApiProperty(iris: ['https://schema.org/email'])]
+    #[ORM\Column(name: 'email', type: Types::STRING, length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Email(mode: Assert\Email::VALIDATION_MODE_STRICT)]
+    #[Serialize\Groups(['client_api:read', 'client_api:write'])]
+    private ?string $email = null;
+
 
     #[ApiProperty(writable: false, iris: ['https://schema.org/Text'])]
     #[ORM\Column(name: 'status', type: Types::STRING, length: 25)]
     #[Serialize\Groups(['client_api:read'])]
     private ?string $status = null;
 
-    #[ORM\Column(name: 'currency', type: Types::STRING, length: 3, nullable: true)]
-    #[Serialize\Groups(['client_api:read', 'client_api:write'])]
-    #[ApiProperty(
-        openapiContext: [
-            'type' => [
-                'oneOf' => [
-                    ['type' => 'string'],
-                    ['type' => 'null'],
-                ],
-            ],
-        ],
-        jsonSchemaContext: [
-            'type' => [
-                'oneOf' => [
-                    ['type' => 'string'],
-                    ['type' => 'null'],
-                ],
-            ],
-        ],
-        // property: 'currency'
-    )
-    ]
-    private ?string $currencyCode = null;
-
     private Currency $currency;
-
-    #[ORM\Column(name: 'vat_number', type: Types::STRING, nullable: true)]
-    #[Serialize\Groups(['client_api:read', 'client_api:write'])]
-    private ?string $vatNumber = null;
 
     /**
      * @var Collection<int, Contact>
@@ -217,6 +196,7 @@ class Client implements Stringable
         $this->addresses = new ArrayCollection();
 
         $this->setCredit(new Credit());
+        $this->currency = new Currency('AUD'); // Default to Australian Dollar
     }
 
     public function getId(): ?Ulid
@@ -224,16 +204,60 @@ class Client implements Stringable
         return $this->id;
     }
 
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
+    // public function getName(): ?string
+    // {
+    //     return $this->name;
+    // }
 
-    public function setName(string $name): self
+    public function setName(string $firstName): self
     {
-        $this->name = $name;
+        $this->firstName = $firstName;
 
         return $this;
+    }
+
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
+    public function setFirstName(string $firstName): self
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    public function setLastName(?string $lastName): self
+    {
+        $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get the full name (firstName + lastName)
+     */
+    public function getName(): string
+    {
+        return trim($this->firstName . ' ' . $this->lastName);
     }
 
     public function getStatus(): ?string
@@ -248,17 +272,6 @@ class Client implements Stringable
         return $this;
     }
 
-    public function getWebsite(): ?string
-    {
-        return $this->website;
-    }
-
-    public function setWebsite(string $website): self
-    {
-        $this->website = $website;
-
-        return $this;
-    }
 
     public function addContact(Contact $contact): self
     {
@@ -413,24 +426,8 @@ class Client implements Stringable
         return $this;
     }
 
-    public function getCurrencyCode(): ?string
-    {
-        return $this->currencyCode;
-    }
-
-    public function setCurrencyCode(?string $currencyCode): self
-    {
-        $this->currencyCode = $currencyCode;
-
-        return $this;
-    }
-
     public function getCurrency(): Currency
     {
-        if (! isset($this->currency) && null !== $this->currencyCode) {
-            $this->currency = new Currency($this->currencyCode);
-        }
-
         return $this->currency;
     }
 
@@ -441,21 +438,9 @@ class Client implements Stringable
         return $this;
     }
 
-    public function getVatNumber(): ?string
-    {
-        return $this->vatNumber;
-    }
-
-    public function setVatNumber(?string $vatNumber): self
-    {
-        $this->vatNumber = $vatNumber;
-
-        return $this;
-    }
-
     public function __toString(): string
     {
-        return $this->name;
+        return $this->getName();
     }
 
     /**

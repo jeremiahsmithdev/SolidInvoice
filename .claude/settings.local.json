@@ -1,7 +1,12 @@
 {
   "permissions": {
     "allow": [
-      "Bash(php bin/console cache:clear:*)"
+      "Bash(php bin/console cache:clear:*)",
+      "Bash(rg:*)",
+      "Bash(find:*)",
+      "Bash(grep:*)",
+      "Bash(php bin/console doctrine:migrations:status:*)",
+      "Bash(php bin/console doctrine:migrations:migrate:*)"
     ],
     "deny": []
   }

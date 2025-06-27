@@ -48,10 +48,7 @@ final class ClientListener
 
         if (! $entity->getId() && ! $entity->getStatus()) {
             $entity->setStatus(Status::STATUS_ACTIVE);
-
-            if ($entity->getCurrencyCode() === null) {
-                $entity->setCurrency($this->config->getCurrency());
-            }
+            // Currency is now defaulted to AUD in the entity constructor
         }
     }
 
@@ -66,11 +63,8 @@ final class ClientListener
             return;
         }
 
-        if (null === $entity->getCurrencyCode()) {
-            $entity->setCurrency($this->config->getCurrency());
-        } else {
-            $entity->setCurrency(new Currency($entity->getCurrencyCode()));
-        }
+        // Currency is now always AUD as per requirements
+        $entity->setCurrency(new Currency('AUD'));
     }
 
     /**

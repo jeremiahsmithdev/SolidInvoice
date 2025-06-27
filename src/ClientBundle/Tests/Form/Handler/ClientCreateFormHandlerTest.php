@@ -45,14 +45,15 @@ class ClientCreateFormHandlerTest extends FormHandlerTestCase
     }
 
     /**
-     * @return array{client: array{name: string, currency: string}}
+     * @return array{client: array{firstName: string, lastName: string, email: string}}
      */
     public function getFormData(): array
     {
         return [
             'client' => [
-                'name' => $this->faker->company(),
-                'currency' => $this->faker->currencyCode()
+                'firstName' => $this->faker->firstName(),
+                'lastName' => $this->faker->lastName(),
+                'email' => $this->faker->email(),
             ],
         ];
     }

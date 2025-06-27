@@ -15421,16 +15421,16 @@
         },
         {
             "name": "symfony/stimulus-bundle",
-            "version": "v2.26.1",
+            "version": "v2.27.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/stimulus-bundle.git",
-                "reference": "82c174ebe564e6ecc1412974b6380b86d450675f"
+                "reference": "defaeb91bd366f9f43dbe54dbdfd9bc3c4138814"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/stimulus-bundle/zipball/82c174ebe564e6ecc1412974b6380b86d450675f",
-                "reference": "82c174ebe564e6ecc1412974b6380b86d450675f",
+                "url": "https://api.github.com/repos/symfony/stimulus-bundle/zipball/defaeb91bd366f9f43dbe54dbdfd9bc3c4138814",
+                "reference": "defaeb91bd366f9f43dbe54dbdfd9bc3c4138814",
                 "shasum": ""
             },
             "require": {
@@ -15470,7 +15470,7 @@
                 "symfony-ux"
             ],
             "support": {
-                "source": "https://github.com/symfony/stimulus-bundle/tree/v2.26.1"
+                "source": "https://github.com/symfony/stimulus-bundle/tree/v2.27.0"
             },
             "funding": [
                 {
@@ -15486,7 +15486,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-06-05T17:25:17+00:00"
+            "time": "2025-06-22T19:07:55+00:00"
         },
         {
             "name": "symfony/stopwatch",
@@ -16362,16 +16362,16 @@
         },
         {
             "name": "symfony/ux-autocomplete",
-            "version": "v2.26.1",
+            "version": "v2.27.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-autocomplete.git",
-                "reference": "3b7c77b3f50a934ca123c6cdbc413d1017a403ef"
+                "reference": "ab0be7ef7d59ea6925fd6fabccbd4d04cb5f5e06"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ux-autocomplete/zipball/3b7c77b3f50a934ca123c6cdbc413d1017a403ef",
-                "reference": "3b7c77b3f50a934ca123c6cdbc413d1017a403ef",
+                "url": "https://api.github.com/repos/symfony/ux-autocomplete/zipball/ab0be7ef7d59ea6925fd6fabccbd4d04cb5f5e06",
+                "reference": "ab0be7ef7d59ea6925fd6fabccbd4d04cb5f5e06",
                 "shasum": ""
             },
             "require": {
@@ -16432,7 +16432,7 @@
                 "symfony-ux"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-autocomplete/tree/v2.26.1"
+                "source": "https://github.com/symfony/ux-autocomplete/tree/v2.27.0"
             },
             "funding": [
                 {
@@ -16448,20 +16448,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-06-05T17:25:17+00:00"
+            "time": "2025-06-21T10:08:18+00:00"
         },
         {
             "name": "symfony/ux-dropzone",
-            "version": "v2.26.1",
+            "version": "v2.27.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-dropzone.git",
-                "reference": "22a3054c601057db63a99e7f8840525cb84921c0"
+                "reference": "054c3e8d4ead9ed41dc671126debcaab32f02588"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ux-dropzone/zipball/22a3054c601057db63a99e7f8840525cb84921c0",
-                "reference": "22a3054c601057db63a99e7f8840525cb84921c0",
+                "url": "https://api.github.com/repos/symfony/ux-dropzone/zipball/054c3e8d4ead9ed41dc671126debcaab32f02588",
+                "reference": "054c3e8d4ead9ed41dc671126debcaab32f02588",
                 "shasum": ""
             },
             "require": {
@@ -16511,7 +16511,7 @@
                 "symfony-ux"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-dropzone/tree/v2.26.1"
+                "source": "https://github.com/symfony/ux-dropzone/tree/v2.27.0"
             },
             "funding": [
                 {
@@ -16527,20 +16527,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-06-05T17:25:17+00:00"
+            "time": "2025-06-22T19:07:55+00:00"
         },
         {
             "name": "symfony/ux-live-component",
-            "version": "v2.26.1",
+            "version": "v2.27.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-live-component.git",
-                "reference": "92b300bb90d87f14aeae47b0f5c9e058b15f5c2f"
+                "reference": "05def4e467d378810f46f826dc67506180df8bd2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ux-live-component/zipball/92b300bb90d87f14aeae47b0f5c9e058b15f5c2f",
-                "reference": "92b300bb90d87f14aeae47b0f5c9e058b15f5c2f",
+                "url": "https://api.github.com/repos/symfony/ux-live-component/zipball/05def4e467d378810f46f826dc67506180df8bd2",
+                "reference": "05def4e467d378810f46f826dc67506180df8bd2",
                 "shasum": ""
             },
             "require": {
@@ -16608,7 +16608,7 @@
                 "twig"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-live-component/tree/v2.26.1"
+                "source": "https://github.com/symfony/ux-live-component/tree/v2.27.0"
             },
             "funding": [
                 {
@@ -16624,20 +16624,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-06-06T19:57:53+00:00"
+            "time": "2025-06-22T19:07:55+00:00"
         },
         {
             "name": "symfony/ux-toggle-password",
-            "version": "v2.26.1",
+            "version": "v2.27.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-toggle-password.git",
-                "reference": "c80578b635ea5de89142760cd92d428a74dd0587"
+                "reference": "9753f554d00e0f86f44726165f9af6e6513086b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ux-toggle-password/zipball/c80578b635ea5de89142760cd92d428a74dd0587",
-                "reference": "c80578b635ea5de89142760cd92d428a74dd0587",
+                "url": "https://api.github.com/repos/symfony/ux-toggle-password/zipball/9753f554d00e0f86f44726165f9af6e6513086b7",
+                "reference": "9753f554d00e0f86f44726165f9af6e6513086b7",
                 "shasum": ""
             },
             "require": {
@@ -16688,7 +16688,7 @@
                 "symfony-ux"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-toggle-password/tree/v2.26.1"
+                "source": "https://github.com/symfony/ux-toggle-password/tree/v2.27.0"
             },
             "funding": [
                 {
@@ -16704,20 +16704,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-06-05T17:25:17+00:00"
+            "time": "2025-06-06T20:27:21+00:00"
         },
         {
             "name": "symfony/ux-twig-component",
-            "version": "v2.26.0",
+            "version": "v2.27.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-twig-component.git",
-                "reference": "825e653b34fb48ed2198913c603d80f7632fe9c1"
+                "reference": "0879cd53812b79e8b6a20e104b6e785a2ac2c013"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ux-twig-component/zipball/825e653b34fb48ed2198913c603d80f7632fe9c1",
-                "reference": "825e653b34fb48ed2198913c603d80f7632fe9c1",
+                "url": "https://api.github.com/repos/symfony/ux-twig-component/zipball/0879cd53812b79e8b6a20e104b6e785a2ac2c013",
+                "reference": "0879cd53812b79e8b6a20e104b6e785a2ac2c013",
                 "shasum": ""
             },
             "require": {
@@ -16771,7 +16771,7 @@
                 "twig"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-twig-component/tree/v2.26.0"
+                "source": "https://github.com/symfony/ux-twig-component/tree/v2.27.0"
             },
             "funding": [
                 {
@@ -16787,7 +16787,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-05-26T06:21:54+00:00"
+            "time": "2025-06-21T16:41:28+00:00"
         },
         {
             "name": "symfony/validator",
@@ -24278,9 +24278,9 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "roave/security-advisories": 20,
         "solidworx/platform": 20,
-        "solidworx/toggler": 10,
-        "roave/security-advisories": 20
+        "solidworx/toggler": 10
     },
     "prefer-stable": false,
     "prefer-lowest": false,
@@ -24295,7 +24295,7 @@
         "ext-soap": "*",
         "ext-xsl": "*"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "platform-overrides": {
         "php": "8.3"
     },

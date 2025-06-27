@@ -85,8 +85,9 @@ client:
             invoice: 'Create Invoice'
             quote: 'Create Quote'
     form:
-        currency:
-            empty_value: 'System Default'
+        first_name: 'First Name'
+        last_name: 'Last Name'
+        email: 'Email'
     contacts:
       info:
         list: 'Select contacts to send %type% to'

@@ -64,7 +64,8 @@ class ClientRepository extends ServiceEntityRepository
         $qb->select(
             [
                 'c.id',
-                'c.name',
+                'c.firstName',
+                'c.lastName',
                 'c.created',
                 'c.status',
             ]

@@ -28,13 +28,15 @@ use function iterator_to_array;
 
 class ClientEditFormHandlerTest extends FormHandlerTestCase
 {
-    private string $clientName;
+    private string $firstName;
+    private string $lastName;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->clientName = $this->faker->company;
+        $this->firstName = $this->faker->firstName;
+        $this->lastName = $this->faker->lastName;
     }
 
     public function getHandler()
@@ -55,7 +57,9 @@ class ClientEditFormHandlerTest extends FormHandlerTestCase
     protected function getHandlerOptions(): array
     {
         $client = new Client();
-        $client->setName('Test One')
+        $client->setFirstName('Test')
+            ->setLastName('One')
+            ->setEmail('test@example.com')
             ->setStatus(Status::STATUS_ACTIVE);
 
         $this->em->persist($client);
@@ -70,7 +74,9 @@ class ClientEditFormHandlerTest extends FormHandlerTestCase
     {
         return [
             'client' => [
-                'name' => $this->clientName,
+                'firstName' => $this->firstName,
+                'lastName' => $this->lastName,
+                'email' => $this->faker->email(),
             ],
         ];
     }
@@ -79,7 +85,8 @@ class ClientEditFormHandlerTest extends FormHandlerTestCase
     {
         /** @var Client $client */
 
-        self::assertSame($this->clientName, $client->getName());
+        self::assertSame($this->firstName, $client->getFirstName());
+        self::assertSame($this->lastName, $client->getLastName());
         self::assertInstanceOf(RedirectResponse::class, $response);
         self::assertInstanceOf(FlashResponse::class, $response);
         self::assertCount(1, iterator_to_array($response->getFlash()));

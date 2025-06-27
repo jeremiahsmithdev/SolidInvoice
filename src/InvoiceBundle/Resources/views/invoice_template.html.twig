@@ -56,19 +56,7 @@
                         <div class="col-sm-4 invoice-col">
                             To:
                             <h4>{{ invoice.client }}</h4>
-                            {% if invoice.client.website is not empty %}
-                                <p>
-                                    <a href="{{ invoice.client.website }}" rel="external" target="_blank">
-                                        {{ invoice.client.website }}
-                                    </a>
-                                </p>
-                            {% endif %}
 
-                            {% if invoice.client.vatNumber is not empty %}
-                                <p>
-                                    <strong>{{ 'tax.vat_number'|trans }}</strong> {{ invoice.client.vatNumber }}
-                                </p>
-                            {% endif %}
 
                             {% for address in invoice.client.addresses %}
                                 <address>

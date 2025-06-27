@@ -45,7 +45,9 @@ final class ClientTest extends ApiTestCase
     public function testCreate(): void
     {
         $data = [
-            'name' => 'Dummy User',
+            'firstName' => 'Dummy',
+            'lastName' => 'User',
+            'email' => 'dummy@example.com',
             'contacts' => [],
             'credit' => '125.50',
         ];
@@ -59,11 +61,10 @@ final class ClientTest extends ApiTestCase
         self::assertEqualsCanonicalizing([
             '@context' => $this->getContextForResource(Client::class),
             '@type' => 'https://schema.org/Corporation',
-            'name' => 'Dummy User',
-            'website' => null,
+            'firstName' => 'Dummy',
+            'lastName' => 'User',
+            'email' => 'dummy@example.com',
             'status' => 'active',
-            'currencyCode' => null,
-            'vatNumber' => null,
             'contacts' => [],
             'quotes' => [],
             'invoices' => [],
@@ -110,11 +111,10 @@ final class ClientTest extends ApiTestCase
             '@id' => $this->getIriFromResource($client),
             '@type' => 'https://schema.org/Corporation',
             'id' => $client->getId()->toString(),
-            'name' => $client->getName(),
-            'website' => $client->getWebsite(),
+            'firstName' => $client->getFirstName(),
+            'lastName' => $client->getLastName(),
+            'email' => $client->getEmail(),
             'status' => $client->getStatus(),
-            'currency' => $client->getCurrencyCode(),
-            'vatNumber' => $client->getVatNumber(),
             'contacts' => array_map($this->getIriFromResource(...), array_map(static fn (Proxy $proxy) => $proxy->_real(), $contacts)),
             'quotes' => [],
             'invoices' => [],
@@ -148,7 +148,9 @@ final class ClientTest extends ApiTestCase
         $data = $this->requestPatch(
             $this->getIriFromResource($client),
             [
-                'name' => 'New Test',
+                'firstName' => 'New',
+                'lastName' => 'Test',
+                'email' => 'newtest@example.com',
                 'contacts' => $contactInfo,
             ]
         );
@@ -158,11 +160,10 @@ final class ClientTest extends ApiTestCase
             '@id' => $this->getIriFromResource($client),
             '@type' => 'https://schema.org/Corporation',
             'id' => $client->getId()->toString(),
-            'name' => 'New Test',
-            'website' => $client->getWebsite(),
+            'firstName' => 'New',
+            'lastName' => 'Test',
+            'email' => 'newtest@example.com',
             'status' => $client->getStatus(),
-            'currency' => $client->getCurrencyCode(),
-            'vatNumber' => $client->getVatNumber(),
             'contacts' => $contactInfo,
             'quotes' => [],
             'invoices' => [],

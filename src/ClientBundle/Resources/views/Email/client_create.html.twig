@@ -20,16 +20,10 @@
             <columns large="6"><strong>{{ 'client.create.details.name'|trans({}, 'email') }}</strong></columns>
             <columns large="6" class="text-right">{{ client.name }}</columns>
         </row>
-        {% if client.website is not empty %}
-            <row>
-                <columns large="6"><strong>{{ 'client.create.details.website'|trans({}, 'email') }}</strong></columns>
-                <columns large="6" class="text-right">
-                    <a href="{{ client.website }}" rel="external" target="_blank">
-                        {{ client.website }}
-                    </a>
-                </columns>
-            </row>
-        {% endif %}
+        <row>
+            <columns large="6"><strong>{{ 'Email'|trans }}</strong></columns>
+            <columns large="6" class="text-right">{{ client.email }}</columns>
+        </row>
 
         <h4>{{ 'client.create.contacts.heading'|trans({}, 'email') }}</h4>
 

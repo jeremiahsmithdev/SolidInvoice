@@ -56,19 +56,7 @@
                         <div class="col-sm-4 invoice-col">
                             To:
                             <h4>{{ quote.client }}</h4>
-                            {% if quote.client.website is not empty %}
-                                <p>
-                                    <a href="{{ quote.client.website }}" rel="external" target="_blank">
-                                        {{ quote.client.website }}
-                                    </a>
-                                </p>
-                            {% endif %}
 
-                            {% if quote.client.vatNumber is not empty %}
-                                <p>
-                                    <strong>{{ 'tax.vat_number'|trans }}</strong> {{ quote.client.vatNumber }}
-                                </p>
-                            {% endif %}
 
                             {% for address in quote.client.addresses %}
                                 <address>

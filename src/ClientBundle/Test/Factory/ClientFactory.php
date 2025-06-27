@@ -64,11 +64,10 @@ final class ClientFactory extends PersistentProxyObjectFactory
     protected function defaults(): array
     {
         return [
-            'name' => self::faker()->company(),
-            'website' => 'https://' . self::faker()->domainName(),
+            'firstName' => self::faker()->firstName(),
+            'lastName' => self::faker()->lastName(),
+            'email' => self::faker()->email(),
             'status' => self::faker()->word(),
-            'currencyCode' => self::faker()->currencyCode(),
-            'vatNumber' => self::faker()->word(),
             'archived' => null,
             'created' => self::faker()->dateTime('2014-02-25 08:37:17'),
             'updated' => self::faker()->dateTime('2014-02-25 08:37:17'),
