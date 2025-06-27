@@ -1,0 +1,7 @@
+menu:
+    map:
+        view: "Map View"
+
+map:
+    title: "Map"
+    description: "Interactive map view"

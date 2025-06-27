@@ -1,0 +1,33 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends '@SolidInvoiceCore/Layout/default.html.twig' %}
+
+{% block page_title %}{{ 'map.title'|trans }}{% endblock %}
+
+{% block title %}
+    {{ icon('map-marker-alt') }} {{ block('page_title') is defined ? block('page_title') }}
+{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">{{ 'map.description'|trans }}</h3>
+        </div>
+        <div class="card-body">
+            <div id="map" 
+                 style="height: 600px; width: 100%;" 
+                 data-controller="map"
+                 data-map-center-lat-value="51.505"
+                 data-map-center-lng-value="-0.09"
+                 data-map-zoom-value="13">
+            </div>
+        </div>
+    </div>
+{% endblock content %}
