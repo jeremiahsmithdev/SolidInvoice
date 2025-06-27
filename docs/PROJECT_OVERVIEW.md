@@ -4,6 +4,21 @@ SolidInvoice is a sophisticated open-source invoicing application designed to as
 
 The application has been enhanced with specialized features for service-based businesses, particularly tree felling and landscaping operations, while maintaining its core functionality for general business use.
 
+## LLM-Friendly Project Context
+
+This section provides a high-level overview tailored for an AI to quickly grasp the project's structure, technologies, and key functionalities, facilitating efficient code understanding and extension.
+
+**Project Type**: Web-based Invoicing and Billing Application
+**Primary Language**: PHP (Backend), TypeScript/JavaScript (Frontend)
+**Frameworks/Libraries**:
+- **Backend**: Symfony 7.x (PHP), Doctrine ORM, API Platform, Payum.
+- **Frontend**: Stimulus (Symfony UX), Twig Components, SCSS (Bootstrap 4, AdminLTE), Webpack Encore, Bun.
+**Database**: MySQL 8.0+ or PostgreSQL 13+
+**Application Server**: FrankenPHP (Caddy-based)
+**Architecture**: Domain-Driven Design (DDD) with Symfony Bundles. Each bundle represents a distinct business domain.
+**Key Business Domains**: Client Management, Invoicing, Quoting, Payment Processing, Tax Management, User Authentication.
+**Recent Focus**: Enhancements for service-based businesses, including automated bank transfer integration.
+
 ## System Requirements
 
 SolidInvoice requires **PHP version 8.3 or later** for optimal performance. It is recommended to use the latest available version of PHP.
@@ -122,12 +137,12 @@ bun install && bun run dev
 
 ## Data Flow
 
-1. **Client Onboarding**: Create client with contacts and service addresses
-2. **Quote Generation**: Create estimates with line items and terms
-3. **Quote Approval**: Convert approved quotes to invoices
-4. **Payment Processing**: Handle payments through configured gateways
-5. **Recurring Billing**: Automated invoice generation for ongoing services
-6. **Reporting**: Dashboard analytics and financial reporting
+1.  **Client Onboarding**: Create client with contacts and service addresses
+2.  **Quote Generation**: Create estimates with line items and terms
+3.  **Quote Approval**: Convert approved quotes to invoices
+4.  **Payment Processing**: Handle payments through configured gateways
+5.  **Recurring Billing**: Automated invoice generation for ongoing services
+6.  **Reporting**: Dashboard analytics and financial reporting
 
 ## License & Contributing
 
