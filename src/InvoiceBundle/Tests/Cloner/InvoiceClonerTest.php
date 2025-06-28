@@ -44,8 +44,9 @@ class InvoiceClonerTest extends TestCase
     public function testClone(): void
     {
         $client = new Client();
-        $client->setName('Test Client');
-        $client->setWebsite('https://example.com');
+        $client->setFirstName('Test');
+        $client->setLastName('Client');
+        $client->setEmail('test@example.com');
         $client->setCreated(new DateTime('NOW'));
 
         $tax = new Tax();
@@ -132,8 +133,9 @@ class InvoiceClonerTest extends TestCase
         $date = new DateTime('now');
 
         $client = new Client();
-        $client->setName('Test Client');
-        $client->setWebsite('http://example.com');
+        $client->setFirstName('Test');
+        $client->setLastName('Client');
+        $client->setEmail('test@example.com');
         $client->setCreated(new DateTime('NOW'));
 
         $tax = new Tax();

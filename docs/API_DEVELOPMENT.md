@@ -52,6 +52,20 @@ GET    /api/invoices/{id}      # Get specific invoice
 POST   /api/invoices           # Create invoice
 PATCH  /api/invoices/{id}      # Update invoice
 DELETE /api/invoices/{id}      # Delete invoice
+
+GET    /api/clients            # List clients
+GET    /api/clients/{id}       # Get specific client
+POST   /api/clients            # Create client
+PATCH  /api/clients/{id}       # Update client
+DELETE /api/clients/{id}       # Delete client
+
+GET    /api/clients/{clientId}/addresses     # List client addresses
+GET    /api/clients/{clientId}/address/{id}  # Get specific address
+POST   /api/clients/{clientId}/addresses     # Create address for client
+PATCH  /api/clients/{clientId}/address/{id}  # Update address
+DELETE /api/clients/{clientId}/address/{id}  # Delete address
+
+GET    /map/api/clients        # Get clients with addresses for mapping
 ```
 
 ## Authentication
@@ -271,6 +285,52 @@ X-API-TOKEN: your-api-token
   "status": "sent"
 }
 ```
+
+### Get Client Map Data
+
+**Request:**
+```http
+GET /map/api/clients
+X-API-TOKEN: your-api-token
+```
+
+**Response:**
+```json
+[
+  {
+    "id": "01234567-89ab-cdef-0123-456789abcdef",
+    "name": "John Smith",
+    "email": "john@example.com",
+    "address": {
+      "street1": "123 Main Street",
+      "street2": "Suite 100",
+      "city": "Sydney",
+      "state": "NSW",
+      "zip": "2000",
+      "country": "AU",
+      "countryName": "Australia",
+      "formatted": "123 Main Street, Suite 100, Sydney, NSW 2000, Australia"
+    }
+  },
+  {
+    "id": "fedcba98-7654-3210-fedc-ba9876543210",
+    "name": "Jane Doe",
+    "email": "jane@company.com",
+    "address": {
+      "street1": "456 Business Ave",
+      "street2": "",
+      "city": "Melbourne",
+      "state": "VIC",
+      "zip": "3000",
+      "country": "AU",
+      "countryName": "Australia",
+      "formatted": "456 Business Ave, Melbourne, VIC 3000, Australia"
+    }
+  }
+]
+```
+
+This endpoint is specifically designed for map visualization and returns only clients that have valid addresses. The `formatted` field provides a complete address string suitable for geocoding services.
 
 ## Error Handling
 

@@ -1,3 +1,9 @@
+
+# TODO - Scratchpad
+- [ ] Feature: Create Quote integrates an Add Client form as well such that a client can be created alongside the quote. The user can also select an existing client as is done in the current system, and this will fill out the form with placeholders displaying the existing data.
+- [ ] Add phone number for client!!
+
+
 # Project Scope: Tree Felling Business Management System
 
 ## Project Overview

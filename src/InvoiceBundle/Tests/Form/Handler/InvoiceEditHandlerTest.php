@@ -62,7 +62,7 @@ final class InvoiceEditHandlerTest extends FormHandlerTestCase
 
         $this->invoice = new Invoice();
         $this->invoice->setStatus(Graph::STATUS_DRAFT);
-        $this->client = (new Client())->setName('Test')->setCurrencyCode('USD')->setCompany($this->company);
+        $this->client = (new Client())->setFirstName('Test')->setEmail('test@example.com')->setCompany($this->company);
         $this->invoice->setClient($this->client);
         $discount = new Discount();
         $discount->setType(Discount::TYPE_PERCENTAGE);

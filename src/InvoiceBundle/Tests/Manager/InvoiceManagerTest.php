@@ -94,8 +94,7 @@ class InvoiceManagerTest extends KernelTestCase
         $currency = new Currency('USD');
 
         $client = new Client();
-        $client->setName('Test Client');
-        $client->setWebsite('http://example.com');
+        $client->setFirstName('Test')->setLastName('Client');
         $client->setCreated(new DateTime('NOW'));
 
         $tax = new Tax();
@@ -156,8 +155,7 @@ class InvoiceManagerTest extends KernelTestCase
         $currency = new Currency('USD');
 
         $client = new Client();
-        $client->setName('Test Client');
-        $client->setWebsite('http://example.com');
+        $client->setFirstName('Test')->setLastName('Client');
         $client->setCreated(new DateTime('NOW'));
 
         $tax = new Tax();

@@ -32,8 +32,10 @@ SolidInvoice follows a **Domain-Driven Design (DDD)** approach with a modular mo
 
 #### ClientBundle
 **Purpose**: Customer and contact management
-- **Entities**: Client, Contact, Address, Credit
-- **Key Features**: Multi-contact support, address management, credit tracking
+- **Entities**: Client, Contact, Address, AdditionalContactDetail, ContactType, Credit
+- **Key Features**: Multi-contact support, flexible address management, credit tracking, geographic data
+- **API Endpoints**: Full CRUD via API Platform with nested address resources
+- **Address System**: Supports multiple addresses per client with country validation
 - **Dependencies**: CoreBundle, UserBundle
 
 #### InvoiceBundle  
@@ -86,6 +88,14 @@ SolidInvoice follows a **Domain-Driven Design (DDD)** approach with a modular mo
 #### NotificationBundle
 **Purpose**: Multi-channel notifications
 - **Features**: Email, SMS, chat notifications
+
+#### MapBundle
+**Purpose**: Geographic visualization and mapping features
+- **Entities**: None (leverages ClientBundle addresses)
+- **Key Features**: Interactive Leaflet.js maps, client location visualization, geocoding integration
+- **Technology**: Stimulus controllers, OpenStreetMap tiles, Nominatim geocoding
+- **API Endpoints**: `/map/api/clients` for client location data
+- **Dependencies**: ClientBundle, CoreBundle
 
 ## Design Patterns
 
@@ -188,6 +198,31 @@ class InvoiceFactory extends ModelFactory
 7. Notifications are sent
 ```
 
+### Client and Address Management Workflow
+
+```
+1. User creates/updates client via form or API
+2. Client entity persisted with basic info (name, email)
+3. Address entities created as separate records
+4. Address validation includes country code verification
+5. Multiple addresses supported per client
+6. Additional contacts can be added with custom contact types
+7. Credit tracking maintained separately
+8. Map visualization geocodes addresses for display
+```
+
+### Map Visualization Workflow
+
+```
+1. User accesses /map page
+2. Map controller initializes Leaflet.js map
+3. Client data fetched from /map/api/clients endpoint
+4. Each client address geocoded via Nominatim API
+5. Markers placed on map with client information popups
+6. Map auto-zooms to fit all client locations
+7. Error handling for failed geocoding attempts
+```
+
 ## Security Architecture
 
 ### Authentication
@@ -238,6 +273,79 @@ class InvoiceFactory extends ModelFactory
 - **Connection Pooling**: Database connection management
 - **Process Management**: FrankenPHP worker processes
 
+## Database Schema Architecture
+
+### Multi-Tenancy Design
+All entities implement company-aware architecture for multi-tenant data isolation:
+
+```sql
+-- Every table includes company_id for tenant separation
+CREATE TABLE clients (
+    id ULID PRIMARY KEY,
+    company_id ULID NOT NULL,
+    firstName VARCHAR(125) NOT NULL,
+    lastName VARCHAR(125),
+    email VARCHAR(255) NOT NULL,
+    status VARCHAR(25),
+    created DATETIME NOT NULL,
+    updated DATETIME NOT NULL,
+    archived DATETIME,
+    UNIQUE(email, company_id),
+    FOREIGN KEY (company_id) REFERENCES companies(id)
+);
+```
+
+### Address Management Schema
+Flexible address system supporting multiple addresses per client:
+
+```sql
+CREATE TABLE addresses (
+    id ULID PRIMARY KEY,
+    client_id ULID,
+    company_id ULID NOT NULL,
+    street1 VARCHAR(255),
+    street2 VARCHAR(255),
+    city VARCHAR(255),
+    state VARCHAR(255),
+    zip VARCHAR(255),
+    country VARCHAR(255), -- ISO country codes
+    created DATETIME NOT NULL,
+    updated DATETIME NOT NULL,
+    FOREIGN KEY (client_id) REFERENCES clients(id),
+    FOREIGN KEY (company_id) REFERENCES companies(id)
+);
+```
+
+### Extensible Contact System
+Dynamic contact fields through contact types:
+
+```sql
+CREATE TABLE contact_types (
+    id ULID PRIMARY KEY,
+    company_id ULID NOT NULL,
+    name VARCHAR(45) NOT NULL, -- "Phone", "Mobile", "Fax"
+    type VARCHAR(45) NOT NULL, -- "tel", "email", "text"
+    field_options ARRAY,       -- JSON configuration
+    required BOOLEAN NOT NULL,
+    UNIQUE(name, company_id)
+);
+
+CREATE TABLE contact_details (
+    id ULID PRIMARY KEY,
+    contact_id ULID,
+    contact_type_id ULID,
+    company_id ULID NOT NULL,
+    value TEXT NOT NULL,
+    created DATETIME NOT NULL,
+    updated DATETIME NOT NULL,
+    FOREIGN KEY (contact_id) REFERENCES contacts(id),
+    FOREIGN KEY (contact_type_id) REFERENCES contact_types(id)
+);
+```
+
+### ULID Primary Keys
+Uses ULIDs (Universally Unique Lexicographically Sortable Identifier) for better distributed system support and performance.
+
 ## Integration Points
 
 ### Payment Gateways
@@ -249,6 +357,12 @@ class InvoiceFactory extends ModelFactory
 - **Mailer Abstraction**: Symfony Mailer with multiple transports
 - **Template Management**: Twig-based email templates
 - **Delivery Tracking**: Email delivery status monitoring
+
+### Geographic Services
+- **OpenStreetMap**: Free tile service for map rendering
+- **Nominatim Geocoding**: Address-to-coordinate conversion
+- **Leaflet.js**: Interactive map rendering library
+- **Error Resilience**: Graceful handling of geocoding failures
 
 ### API Integration
 - **API Platform**: Automatic API generation

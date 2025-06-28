@@ -68,9 +68,9 @@ final class QuoteCreateHandlerTest extends FormHandlerTestCase
         parent::setUp();
 
         $this->client = new Client();
-        $this->client->setFirstName('Test')->setEmail('test@example.com');
+        $this->client->setName('Test');
         $this->client->setCompany($this->company);
-        $this->client->setCurrency(new Currency('USD'));
+        $this->client->setCurrencyCode('USD');
 
         $this->em->persist($this->client);
     }

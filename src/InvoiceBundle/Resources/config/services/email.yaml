@@ -1,0 +1,9 @@
+services:
+    SolidInvoice\InvoiceBundle\Email\InvoiceEmail:
+        arguments:
+            $senderAddress: '%invoice_email.sender_address%'
+            $senderName: '%invoice_email.sender_name%'
+
+parameters:
+    invoice_email.sender_name: '%business_name%'
+    invoice_email.sender_address: '%business_email%'

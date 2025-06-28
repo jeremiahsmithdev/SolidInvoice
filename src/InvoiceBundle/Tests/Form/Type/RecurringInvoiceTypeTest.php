@@ -33,7 +33,7 @@ class RecurringInvoiceTypeTest extends FormTestCase
 {
     public function testSubmit(): void
     {
-        $client = (new Client())->setCompany($this->company)->setCurrencyCode('USD');
+        $client = (new Client())->setCompany($this->company)->setCurrency(new Currency('USD'));
 
         $this->registry->getManager()->persist($client);
 

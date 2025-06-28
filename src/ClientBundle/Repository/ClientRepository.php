@@ -66,8 +66,10 @@ class ClientRepository extends ServiceEntityRepository
                 'c.id',
                 'c.firstName',
                 'c.lastName',
+                'c.email',
                 'c.created',
                 'c.status',
+                "CONCAT(c.firstName, ' ', COALESCE(c.lastName, '')) as name"
             ]
         )
             ->orderBy('c.created', Criteria::DESC)
@@ -189,5 +191,21 @@ class ClientRepository extends ServiceEntityRepository
     public function delete(Client $client): void
     {
         $this->getEntityManager()->remove($client);
+    }
+
+    /**
+     * @return Client[]
+     */
+    public function findAllWithAddresses(): array
+    {
+        $qb = $this->createQueryBuilder('c');
+
+        $qb->select('c', 'a')
+            ->leftJoin('c.addresses', 'a')
+            ->where('c.status != :archived')
+            ->setParameter('archived', Status::STATUS_ARCHIVED)
+            ->orderBy('c.firstName', 'ASC');
+
+        return $qb->getQuery()->getResult();
     }
 }

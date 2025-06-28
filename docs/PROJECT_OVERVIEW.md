@@ -117,6 +117,13 @@ The frontend uses a **progressive enhancement** approach:
 - **Payment Template System**: Configurable payment method displays
 - **Enhanced Quote-to-Invoice Workflow**: Streamlined business process
 
+### Client Contact Integration (June 2025)
+- **Merged Contact Information**: Consolidated client and contact data into unified "Client Contact" form
+- **Phone Number Support**: Added direct phone field to client entity with validation
+- **Automatic Contact Creation**: Client saving now automatically creates required Contact entities
+- **Database Schema Updates**: Added phone column to clients table while maintaining backward compatibility
+- **ContactType Integration**: Phone numbers stored in both client field and legacy AdditionalContactDetail system
+
 ## Installation Options
 
 SolidInvoice offers multiple installation methods:

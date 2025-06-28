@@ -12,10 +12,15 @@ declare(strict_types=1);
  */
 
 use SolidInvoice\MapBundle\Action\Index;
+use SolidInvoice\MapBundle\Action\ClientMapData;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 return static function (RoutingConfigurator $routingConfigurator): void {
     $routingConfigurator
         ->add('_map', '/map')
         ->controller(Index::class);
+    
+    $routingConfigurator
+        ->add('_map_client_data', '/map/api/clients')
+        ->controller(ClientMapData::class);
 };

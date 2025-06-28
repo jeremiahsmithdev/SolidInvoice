@@ -71,9 +71,9 @@ final class InvoiceCreateHandlerTest extends FormHandlerTestCase
         parent::setUp();
 
         $this->client = new Client();
-        $this->client->setName('Test');
+        $this->client->setFirstName('Test');
+        $this->client->setEmail('test@example.com');
         $this->client->setCompany($this->company);
-        $this->client->setCurrencyCode('USD');
 
         $this->em->persist($this->client);
     }

@@ -15,6 +15,7 @@ namespace SolidInvoice\InvoiceBundle\Tests\Listener;
 
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
+use Money\Currency;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
@@ -41,7 +42,7 @@ class WorkFlowSubscriberTest extends TestCase
 
         $invoice = new Invoice();
         $invoice->setBalance(1200);
-        $invoice->setClient((new Client())->setName('Test')->setCurrencyCode('USD'));
+        $invoice->setClient((new Client())->setFirstName('Test')->setCurrency(new Currency('USD')));
         $invoice->setStatus('pending');
 
         $subscriber->onWorkflowTransitionApplied(new Event($invoice, new Marking(['pending' => 1]), new Transition('pay', 'pending', 'paid'), M::mock(WorkflowInterface::class)));
@@ -59,7 +60,7 @@ class WorkFlowSubscriberTest extends TestCase
 
         $invoice = new Invoice();
         $invoice->setBalance(1200);
-        $invoice->setClient((new Client())->setName('Test')->setCurrencyCode('USD'));
+        $invoice->setClient((new Client())->setFirstName('Test')->setCurrency(new Currency('USD')));
         $invoice->setStatus('pending');
 
         $subscriber->onWorkflowTransitionApplied(new Event($invoice, new Marking(['pending' => 1]), new Transition('archive', 'pending', 'archived'), M::mock(WorkflowInterface::class)));
