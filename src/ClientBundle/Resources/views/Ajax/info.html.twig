@@ -11,6 +11,7 @@
     <fieldset>
         <legend>
             <h4>
+                {{ client.name }}
                 <small>
                     (<a href="#" data-action="live#action:prevent" data-live-action-param="clearClient">{{ "change"|trans }}</a>)
                 </small>
@@ -18,12 +19,42 @@
         </legend>
 
         {% if type is defined %}
-            <small>{{ 'client.contacts.info.list'|trans({'%type%': type}) }}</small>
+            <small>{{ 'client.info.details'|trans({'%type%': type}) }}</small>
         {% endif %}
 
-        {% if form.users is defined %}
-            {{ form_errors(form.users) }}
-            {{ form_row(form.users) }}
-        {% endif %}
+        <div class="client-contact-info">
+            {% if client.phone is defined and client.phone %}
+                <div class="contact-detail">
+                    <strong>{{ 'Phone'|trans }}:</strong> {{ client.phone }}
+                </div>
+            {% endif %}
+            
+            {% if client.email is defined and client.email %}
+                <div class="contact-detail">
+                    <strong>{{ 'Email'|trans }}:</strong> {{ client.email }}
+                </div>
+            {% endif %}
+            
+            {% if client.addresses is defined and client.addresses is not empty %}
+                {% for address in client.addresses %}
+                    {% if address is defined and not address.isEmpty %}
+                        <div class="address-info">
+                            <strong>{{ 'Address'|trans }}:</strong>
+                            <div class="address-details">
+                                {% if address.street1 is defined and address.street1 %}{{ address.street1 }}<br>{% endif %}
+                                {% if address.street2 is defined and address.street2 %}{{ address.street2 }}<br>{% endif %}
+                                {% if address.city is defined and address.city %}
+                                    {{ address.city }}
+                                    {% if address.state is defined and address.state %}, {{ address.state }}{% endif %}
+                                    {% if address.zip is defined and address.zip %} {{ address.zip }}{% endif %}
+                                    <br>
+                                {% endif %}
+                                {% if address.country is defined and address.country %}{{ address.country }}{% endif %}
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </div>
     </fieldset>
 </div>

@@ -14,9 +14,11 @@ declare(strict_types=1);
 namespace SolidInvoice\ClientBundle\Form\Type;
 
 use SolidInvoice\ClientBundle\Entity\Address;
+use SolidInvoice\ClientBundle\Entity\AdditionalContactDetail;
 use SolidInvoice\ClientBundle\Entity\Client;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -31,7 +33,22 @@ class ClientType extends AbstractType
     {
         $builder->add('firstName', null, ['label' => 'client.form.first_name']);
         $builder->add('lastName', null, ['label' => 'client.form.last_name', 'required' => false]);
+        $builder->add('phone', TelType::class, ['label' => 'Phone', 'required' => false]);
         $builder->add('email', EmailType::class, ['label' => 'client.form.email']);
+
+        $builder->add(
+            'additionalContactDetails',
+            LiveCollectionType::class,
+            [
+                'entry_type' => ContactDetailType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+                'required' => false,
+                'label' => 'contact_details',
+                'mapped' => false,
+            ]
+        );
 
         $builder->add(
             'addresses',

@@ -230,7 +230,6 @@ class Quote
     )]
     #[ORM\ManyToMany(targetEntity: Contact::class, inversedBy: 'quotes')]
     #[ORM\JoinTable(name: 'quote_contact')]
-    #[Assert\Count(min: 1, minMessage: 'You need to select at least 1 user to attach to the Quote')]
     #[Groups(['quote_api:read', 'quote_api:write'])]
     private Collection $users;
 

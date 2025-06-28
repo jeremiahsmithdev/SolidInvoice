@@ -104,6 +104,11 @@ class Client implements Stringable
     #[Serialize\Groups(['client_api:read', 'client_api:write'])]
     private ?string $email = null;
 
+    #[ApiProperty(iris: ['https://schema.org/telephone'])]
+    #[ORM\Column(name: 'phone', type: Types::STRING, length: 50, nullable: true)]
+    #[Assert\Length(max: 50)]
+    #[Serialize\Groups(['client_api:read', 'client_api:write'])]
+    private ?string $phone = null;
 
     #[ApiProperty(writable: false, iris: ['https://schema.org/Text'])]
     #[ORM\Column(name: 'status', type: Types::STRING, length: 25)]
@@ -209,12 +214,6 @@ class Client implements Stringable
     //     return $this->name;
     // }
 
-    public function setName(string $firstName): self
-    {
-        $this->firstName = $firstName;
-
-        return $this;
-    }
 
     public function getFirstName(): ?string
     {
@@ -248,6 +247,18 @@ class Client implements Stringable
     public function setEmail(string $email): self
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(?string $phone): self
+    {
+        $this->phone = $phone;
 
         return $this;
     }

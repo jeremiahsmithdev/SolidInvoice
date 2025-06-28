@@ -179,7 +179,6 @@ class Invoice extends BaseInvoice implements Stringable
     )]
     #[ORM\ManyToMany(targetEntity: Contact::class, inversedBy: 'invoices')]
     #[ORM\JoinTable(name: 'invoice_contact')]
-    #[Assert\Count(min: 1, minMessage: 'You need to select at least 1 user to attach to the Invoice')]
     #[Groups(['invoice_api:read', 'invoice_api:write'])]
     private Collection $users;
 

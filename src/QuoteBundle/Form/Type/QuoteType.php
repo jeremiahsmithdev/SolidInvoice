@@ -13,25 +13,20 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Form\Type;
 
-use Doctrine\ORM\EntityRepository;
 use JsonException;
 use Money\Currency;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Form\ClientAutocompleteType;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\MoneyBundle\Form\Type\HiddenMoneyType;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\SettingsBundle\SystemConfig;
-use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
-use Symfonycasts\DynamicForms\DependentField;
 use Symfonycasts\DynamicForms\DynamicFormBuilder;
 
 /**
@@ -98,25 +93,6 @@ class QuoteType extends AbstractType
         $builder->add('baseTotal', HiddenMoneyType::class, ['currency' => $options['currency']]);
         $builder->add('tax', HiddenMoneyType::class, ['currency' => $options['currency']]);
 
-        $builder->addDependent('users', 'client', function (DependentField $field, ?Client $client): void {
-            if (! $client instanceof Client) {
-                return;
-            }
-
-            $field->add(
-                null,
-                [
-                    'constraints' => new NotBlank(),
-                    'expanded' => true,
-                    'multiple' => true,
-                    'query_builder' => function (EntityRepository $repo) use ($client) {
-                        return $repo->createQueryBuilder('c')
-                            ->where('c.client = :client')
-                            ->setParameter('client', $client->getId(), UlidType::NAME);
-                    },
-                ]
-            );
-        });
     }
 
     public function configureOptions(OptionsResolver $resolver): void
