@@ -17,6 +17,8 @@ use Doctrine\Persistence\ManagerRegistry;
 use JsonException;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use SolidInvoice\InvoiceBundle\Model\Graph as InvoiceGraph;
+use SolidInvoice\JobBundle\Entity\Job;
+use SolidInvoice\JobBundle\Repository\JobRepository;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Exception\InvalidTransitionException;
@@ -38,7 +40,8 @@ final class WorkFlowSubscriber implements EventSubscriberInterface
         private readonly InvoiceManager $invoiceManager,
         private readonly WorkflowInterface $invoiceStateMachine,
         private readonly NotificationManager $notification,
-        private readonly QuoteMailer $quoteMailer
+        private readonly QuoteMailer $quoteMailer,
+        private readonly JobRepository $jobRepository
     ) {
     }
 
@@ -60,6 +63,16 @@ final class WorkFlowSubscriber implements EventSubscriberInterface
         $invoice = $this->invoiceManager->createFromQuote($quote);
 
         $this->invoiceStateMachine->apply($invoice, InvoiceGraph::TRANSITION_NEW);
+
+        // Create a Job when quote is accepted
+        $job = new Job();
+        $job->setQuote($quote);
+        $job->setClient($quote->getClient());
+        $job->setStatus(Job::STATUS_PENDING);
+        $job->setDescription($quote->getTitle() ?? ('Job for Quote #' . $quote->getId()));
+        $job->setCompany($quote->getCompany());
+
+        $this->jobRepository->save($job, true);
     }
 
     /**

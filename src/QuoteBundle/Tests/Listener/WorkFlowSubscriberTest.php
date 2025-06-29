@@ -19,6 +19,8 @@ use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
+use SolidInvoice\JobBundle\Entity\Job;
+use SolidInvoice\JobBundle\Repository\JobRepository;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Listener\WorkFlowSubscriber;
@@ -43,7 +45,10 @@ final class WorkFlowSubscriberTest extends KernelTestCase
 
     public function testOnQuoteAccepted(): void
     {
-        $quote = new Quote();
+        $client = ClientFactory::createOne()->_real();
+        $quote = (new Quote())
+            ->setClient($client)
+            ->setTitle('Test Quote for Tree Removal');
         $invoice = new Invoice();
 
         $invoiceManager = M::mock(InvoiceManager::class);
@@ -64,15 +69,29 @@ final class WorkFlowSubscriberTest extends KernelTestCase
         $notification->shouldReceive('sendNotification')
             ->zeroOrMoreTimes();
 
+        $jobRepository = M::mock(JobRepository::class);
+        $jobRepository->shouldReceive('save')
+            ->once()
+            ->with(M::type(Job::class), true)
+            ->andReturnUsing(function (Job $job) use ($quote, $client) {
+                // Verify the job is created with correct properties
+                self::assertSame($quote, $job->getQuote());
+                self::assertSame($client, $job->getClient());
+                self::assertSame(Job::STATUS_PENDING, $job->getStatus());
+                self::assertSame('Test Quote for Tree Removal', $job->getDescription());
+                return null;
+            });
+
         $subscriber = new WorkFlowSubscriber(
             $this->registry,
             $invoiceManager,
             $stateMachine,
             $notification,
-            new QuoteMailer($stateMachine, M::mock(MailerInterface::class), $notification)
+            new QuoteMailer($stateMachine, M::mock(MailerInterface::class), $notification),
+            $jobRepository
         );
 
-        $subscriber->onQuoteAccepted(new Event($quote, new Marking(['pending' => 1]), new Transition('archive', 'pending', 'archived'), M::mock(WorkflowInterface::class)));
+        $subscriber->onQuoteAccepted(new Event($quote, new Marking(['pending' => 1]), new Transition('accept', 'pending', 'accepted'), M::mock(WorkflowInterface::class)));
     }
 
     public function testOnWorkflowTransitionApplied(): void
@@ -88,12 +107,15 @@ final class WorkFlowSubscriberTest extends KernelTestCase
         $notification->shouldReceive('sendNotification')
             ->zeroOrMoreTimes();
 
+        $jobRepository = M::mock(JobRepository::class);
+        
         $subscriber = new WorkFlowSubscriber(
             $this->registry,
             $invoiceManager,
             $stateMachine,
             $notification,
-            new QuoteMailer($stateMachine, M::mock(MailerInterface::class), $notification)
+            new QuoteMailer($stateMachine, M::mock(MailerInterface::class), $notification),
+            $jobRepository
         );
 
         $subscriber->onWorkflowTransitionApplied(new Event($quote, new Marking(['pending' => 1]), new Transition('archive', 'pending', 'archived'), M::mock(WorkflowInterface::class)));
