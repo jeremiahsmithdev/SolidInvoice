@@ -38,6 +38,7 @@ use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\JobBundle\Entity\Job;
 use SolidInvoice\QuoteBundle\Repository\QuoteRepository;
 use SolidInvoice\QuoteBundle\Traits\QuoteStatusTrait;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
@@ -240,11 +241,16 @@ class Quote
     )]
     private ?Invoice $invoice = null;
 
+    #[ORM\OneToMany(mappedBy: 'quote', targetEntity: Job::class, cascade: ['remove'], orphanRemoval: true)]
+    #[Groups(['quote_api:read'])]
+    private Collection $jobs;
+
     public function __construct()
     {
         $this->discount = new Discount();
         $this->lines = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->jobs = new ArrayCollection();
         $this->baseTotal = BigDecimal::zero();
         $this->tax = BigDecimal::zero();
         $this->total = BigDecimal::zero();
@@ -449,6 +455,35 @@ class Quote
     public function getInvoice(): ?Invoice
     {
         return $this->invoice;
+    }
+
+    /**
+     * @return Collection<int, Job>
+     */
+    public function getJobs(): Collection
+    {
+        return $this->jobs;
+    }
+
+    public function addJob(Job $job): self
+    {
+        if (!$this->jobs->contains($job)) {
+            $this->jobs->add($job);
+            $job->setQuote($this);
+        }
+
+        return $this;
+    }
+
+    public function removeJob(Job $job): self
+    {
+        if ($this->jobs->removeElement($job)) {
+            if ($job->getQuote() === $this) {
+                $job->setQuote(null);
+            }
+        }
+
+        return $this;
     }
 
     public function getQuoteId(): string

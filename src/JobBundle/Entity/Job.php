@@ -26,6 +26,7 @@ use Doctrine\ORM\Mapping as ORM;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\JobBundle\Repository\JobRepository;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use Stringable;
@@ -101,6 +102,11 @@ class Job implements Stringable
     #[Serialize\Groups(['job_api:read', 'job_api:write'])]
     private ?DateTimeInterface $scheduledDate = null;
 
+    #[ORM\ManyToOne(targetEntity: Invoice::class, inversedBy: 'jobs')]
+    #[ORM\JoinColumn(name: 'invoice_id', referencedColumnName: 'id', nullable: true)]
+    #[Serialize\Groups(['job_api:read', 'job_api:write'])]
+    private ?Invoice $invoice = null;
+
     public function __construct()
     {
         $this->status = self::STATUS_PENDING;
@@ -163,6 +169,17 @@ class Job implements Stringable
     public function setScheduledDate(?DateTimeInterface $scheduledDate): self
     {
         $this->scheduledDate = $scheduledDate;
+        return $this;
+    }
+
+    public function getInvoice(): ?Invoice
+    {
+        return $this->invoice;
+    }
+
+    public function setInvoice(?Invoice $invoice): self
+    {
+        $this->invoice = $invoice;
         return $this;
     }
 

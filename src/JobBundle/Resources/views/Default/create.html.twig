@@ -1,0 +1,82 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
+
+{% block title %}{{ 'job.create'|trans }}{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">{{ 'job.create'|trans }}</h3>
+                </div>
+                <div class="card-body">
+                    {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+                        
+                        <div class="form-group row">
+                            {{ form_label(form.client, null, {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
+                            <div class="col-sm-9">
+                                {{ form_widget(form.client, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(form.client) }}
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            {{ form_label(form.quote, null, {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
+                            <div class="col-sm-9">
+                                {{ form_widget(form.quote, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(form.quote) }}
+                                <small class="form-text text-muted">{{ 'job.form.quote.help'|trans }}</small>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            {{ form_label(form.status, null, {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
+                            <div class="col-sm-9">
+                                {{ form_widget(form.status, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(form.status) }}
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            {{ form_label(form.description, null, {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
+                            <div class="col-sm-9">
+                                {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(form.description) }}
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            {{ form_label(form.scheduledDate, null, {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
+                            <div class="col-sm-9">
+                                {{ form_widget(form.scheduledDate, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(form.scheduledDate) }}
+                                <small class="form-text text-muted">{{ 'job.form.scheduled_date.help'|trans }}</small>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-sm-9 offset-sm-3">
+                                <button type="submit" class="btn btn-success">
+                                    {{ icon('check') }} {{ 'job.create'|trans }}
+                                </button>
+                                <a href="{{ path('_jobs_index') }}" class="btn btn-secondary">
+                                    {{ icon('arrow-left') }} {{ 'job.back_to_list'|trans }}
+                                </a>
+                            </div>
+                        </div>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

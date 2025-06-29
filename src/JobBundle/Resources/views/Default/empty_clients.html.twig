@@ -1,0 +1,26 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
+
+{% block title %}{{ 'job.create'|trans }}{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-info">
+                <h4>{{ icon('info-circle') }} {{ 'job.no_clients.title'|trans }}</h4>
+                <p>{{ 'job.no_clients.message'|trans }}</p>
+                <a href="{{ path('_clients_create') }}" class="btn btn-primary">
+                    {{ icon('plus') }} {{ 'client.create'|trans }}
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

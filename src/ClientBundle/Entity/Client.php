@@ -32,6 +32,7 @@ use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Model\Graph;
+use SolidInvoice\JobBundle\Entity\Job;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use Stringable;
@@ -154,6 +155,14 @@ class Client implements Stringable
     private Collection $invoices;
 
     /**
+     * @var Collection<int, Job>
+     */
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Job::class, cascade: ['remove'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
+    #[ORM\OrderBy(['created' => 'DESC'])]
+    #[Serialize\Groups(['client_api:read'])]
+    private Collection $jobs;
+
+    /**
      * @var Collection<int, RecurringInvoice>
      */
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: RecurringInvoice::class, cascade: ['remove'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
@@ -196,6 +205,7 @@ class Client implements Stringable
         $this->contacts = new ArrayCollection();
         $this->quotes = new ArrayCollection();
         $this->invoices = new ArrayCollection();
+        $this->jobs = new ArrayCollection();
         $this->recurringInvoices = new ArrayCollection();
         $this->payments = new ArrayCollection();
         $this->addresses = new ArrayCollection();
@@ -351,6 +361,31 @@ class Client implements Stringable
     public function getInvoices(): Collection
     {
         return $this->invoices;
+    }
+
+    public function addJob(Job $job): self
+    {
+        if (!$this->jobs->contains($job)) {
+            $this->jobs->add($job);
+            $job->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeJob(Job $job): self
+    {
+        $this->jobs->removeElement($job);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Job>
+     */
+    public function getJobs(): Collection
+    {
+        return $this->jobs;
     }
 
     public function addRecurringInvoice(RecurringInvoice $invoice): self

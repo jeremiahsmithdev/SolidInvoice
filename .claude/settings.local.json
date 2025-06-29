@@ -28,7 +28,8 @@
       "mcp__playwright__playwright_press_key",
       "Bash(npm install:*)",
       "Bash(curl:*)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(mkdir:*)"
     ],
     "deny": []
   }

@@ -31,4 +31,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services
         ->load('SolidInvoice\\JobBundle\\Action\\', dirname(__DIR__, 3) . '/Action')
         ->tag('controller.service_arguments');
+
+    $services
+        ->set('solidinvoice.job.menu.builder', 'SolidInvoice\\JobBundle\\Menu\\Builder')
+        ->tag('cs_core.menu', ['menu' => 'sidebar']);
 };

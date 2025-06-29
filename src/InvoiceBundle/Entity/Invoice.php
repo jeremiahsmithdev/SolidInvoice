@@ -38,6 +38,7 @@ use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\InvoiceBundle\Traits\InvoiceStatusTrait;
+use SolidInvoice\JobBundle\Entity\Job;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use Stringable;
@@ -157,6 +158,10 @@ class Invoice extends BaseInvoice implements Stringable
     #[ApiProperty(example: '/api/quotes/3fa85f64-5717-4562-b3fc-2c963f66afa6')]
     private ?Quote $quote = null;
 
+    #[ORM\OneToMany(mappedBy: 'invoice', targetEntity: Job::class)]
+    #[Groups(['invoice_api:read'])]
+    private Collection $jobs;
+
     #[ORM\ManyToOne(targetEntity: RecurringInvoice::class, inversedBy: 'invoices')]
     #[ORM\JoinColumn(name: 'recurring_invoice_id', referencedColumnName: 'id', nullable: true)]
     private ?RecurringInvoice $recurringInvoice = null;
@@ -189,6 +194,7 @@ class Invoice extends BaseInvoice implements Stringable
         $this->payments = new ArrayCollection();
         $this->lines = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->jobs = new ArrayCollection();
         $this->balance = BigInteger::zero();
         $this->invoiceDate = new DateTimeImmutable();
         $this->setUuid(Uuid::v7());
@@ -323,6 +329,35 @@ class Invoice extends BaseInvoice implements Stringable
     {
         $this->quote = $quote;
         $quote->setInvoice($this);
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Job>
+     */
+    public function getJobs(): Collection
+    {
+        return $this->jobs;
+    }
+
+    public function addJob(Job $job): self
+    {
+        if (!$this->jobs->contains($job)) {
+            $this->jobs->add($job);
+            $job->setInvoice($this);
+        }
+
+        return $this;
+    }
+
+    public function removeJob(Job $job): self
+    {
+        if ($this->jobs->removeElement($job)) {
+            if ($job->getInvoice() === $this) {
+                $job->setInvoice(null);
+            }
+        }
+
         return $this;
     }
 

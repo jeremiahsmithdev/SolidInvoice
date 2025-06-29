@@ -1,0 +1,130 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
+
+{% block page_title %}
+    {{ "job.title"|trans({"%id%" : job.id}) }}
+{% endblock page_title %}
+
+{% block content %}
+    <div class="float-right no-print">
+        <div class="btn-toolbar" role="toolbar">
+            <div class="btn-group mr-2" role="group">
+                {% if job.quote is not null %}
+                    <a href="{{ path('_quotes_view', {'id' : job.quote.id}) }}" class="btn btn-secondary">
+                        {{ icon('file-text-o') }} {{ "job.view.toolbar.view_quote"|trans }}
+                    </a>
+                {% endif %}
+                {% if job.invoice is not null %}
+                    <a href="{{ path('_invoices_view', {'id' : job.invoice.id}) }}" class="btn btn-secondary">
+                        {{ icon('file-text-o') }} {{ "job.view.toolbar.view_invoice"|trans }}
+                    </a>
+                {% endif %}
+                <a href="{{ path('_jobs_clone', {'id' : job.id}) }}" class="btn btn-secondary">
+                    {{ icon('clone') }} {{ "job.view.toolbar.clone"|trans }}
+                </a>
+                {% if job.isPending %}
+                    <a href="{{ path('_transition_job', {'action' : 'start', 'id' : job.id}) }}" class="btn btn-success">
+                        {{ icon('play') }} {{ "job.view.toolbar.start"|trans }}
+                    </a>
+                {% endif %}
+
+                {% if job.isInProgress %}
+                    <a href="{{ path('_transition_job', {'action': 'complete', 'id' : job.id}) }}" class="btn btn-primary">
+                        {{ icon('check') }} {{ "job.view.toolbar.complete"|trans }}
+                    </a>
+                {% endif %}
+
+                {% if job.isDone %}
+                    <a href="{{ path('_transition_job', {'action': 'reopen', 'id' : job.id}) }}" class="btn btn-warning">
+                        {{ icon('undo') }} {{ "job.view.toolbar.reopen"|trans }}
+                    </a>
+                {% endif %}
+
+                <a href="{{ path('_jobs_edit', {'id' : job.id}) }}" class="btn btn-primary">
+                    {{ icon('edit') }} {{ "job.view.toolbar.edit"|trans }}
+                </a>
+
+                <a href="{{ path('_jobs_view', {'id': job.id, '_format': 'pdf'}) }}" class="btn btn-secondary">
+                    {{ icon('file-pdf-o') }} {{ "job.view.toolbar.download_pdf"|trans }}
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">{{ "job.view.details"|trans }}</h3>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-4">{{ "job.view.status"|trans }}</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge badge-{% if job.isPending %}warning{% elseif job.isInProgress %}info{% else %}success{% endif %}">
+                                {{ job.status|title }}
+                            </span>
+                        </dd>
+
+                        <dt class="col-sm-4">{{ "job.view.client"|trans }}</dt>
+                        <dd class="col-sm-8">
+                            <a href="{{ path('_clients_view', {'id': job.client.id}) }}">
+                                {{ job.client }}
+                            </a>
+                        </dd>
+
+                        {% if job.quote %}
+                            <dt class="col-sm-4">{{ "job.view.quote"|trans }}</dt>
+                            <dd class="col-sm-8">
+                                <a href="{{ path('_quotes_view', {'id': job.quote.id}) }}">
+                                    #{{ job.quote.quoteId }}
+                                </a>
+                            </dd>
+                        {% endif %}
+
+                        {% if job.invoice %}
+                            <dt class="col-sm-4">{{ "job.view.invoice"|trans }}</dt>
+                            <dd class="col-sm-8">
+                                <a href="{{ path('_invoices_view', {'id': job.invoice.id}) }}">
+                                    #{{ job.invoice.invoiceId }}
+                                </a>
+                            </dd>
+                        {% endif %}
+
+                        {% if job.scheduledDate %}
+                            <dt class="col-sm-4">{{ "job.view.scheduled_date"|trans }}</dt>
+                            <dd class="col-sm-8">{{ job.scheduledDate|date('d F Y H:i') }}</dd>
+                        {% endif %}
+
+                        <dt class="col-sm-4">{{ "job.view.created"|trans }}</dt>
+                        <dd class="col-sm-8">{{ job.created|date('d F Y H:i') }}</dd>
+
+                        <dt class="col-sm-4">{{ "job.view.updated"|trans }}</dt>
+                        <dd class="col-sm-8">{{ job.updated|date('d F Y H:i') }}</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            {% if job.description %}
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">{{ "job.view.description"|trans }}</h3>
+                    </div>
+                    <div class="card-body">
+                        {{ job.description|nl2br }}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock content %}
