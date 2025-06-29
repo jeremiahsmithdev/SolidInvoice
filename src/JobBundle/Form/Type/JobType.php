@@ -14,20 +14,30 @@ declare(strict_types=1);
 namespace SolidInvoice\JobBundle\Form\Type;
 
 use SolidInvoice\ClientBundle\Form\ClientAutocompleteType;
+use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\JobBundle\Entity\Job;
 use SolidInvoice\QuoteBundle\Form\QuoteAutocompleteType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class JobType extends AbstractType
 {
+    public function __construct(
+        private readonly BillingIdGenerator $billingIdGenerator
+    ) {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $job = $options['data'] ?? new Job();
+        $data = $job->getJobId() ?: $this->billingIdGenerator->generate($job, ['field' => 'jobId']);
+
         $builder
+            ->add('jobId', null, ['data' => $data])
             ->add(
                 'client',
                 ClientAutocompleteType::class,
@@ -74,7 +84,7 @@ class JobType extends AbstractType
             )
             ->add(
                 'scheduledDate',
-                DateTimeType::class,
+                DateType::class,
                 [
                     'required' => false,
                     'widget' => 'single_text',

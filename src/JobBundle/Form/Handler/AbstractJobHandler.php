@@ -45,10 +45,10 @@ abstract class AbstractJobHandler implements FormHandlerInterface, FormHandlerRe
         return $factory->create(JobType::class, $options->get('job'), $options->get('form_options', []));
     }
 
-    public function onSuccess(FormRequest $formRequest): ?Response
+    public function onSuccess(FormRequest $formRequest, $data): ?Response
     {
         /** @var Job $job */
-        $job = $formRequest->getForm()->getData();
+        $job = $data;
 
         $this->save($job);
 

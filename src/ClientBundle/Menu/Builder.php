@@ -16,9 +16,16 @@ namespace SolidInvoice\ClientBundle\Menu;
 use InvalidArgumentException;
 use SolidInvoice\MenuBundle\Core\AuthenticatedMenu;
 use SolidInvoice\MenuBundle\ItemInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class Builder extends AuthenticatedMenu
 {
+    public function __construct(
+        AuthorizationCheckerInterface $authorizationChecker
+    ) {
+        parent::__construct($authorizationChecker);
+    }
+
     /**
      * Renders the top menu for clients.
      *

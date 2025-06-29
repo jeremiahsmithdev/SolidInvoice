@@ -32,16 +32,16 @@ abstract class BaseJobGrid extends Grid
     public function columns(): array
     {
         return [
-            StringColumn::new('id')
+            StringColumn::new('jobId')
                 ->label('Job #')
+                ->formatValue(fn (?string $value) => $value ? '#' . $value : '-')
                 ->searchable(false),
             StringColumn::new('client')
                 ->searchable(false)
                 ->linkToRoute('_clients_view', ['id' => 'client.id']),
             StringColumn::new('quote')
                 ->searchable(false)
-                ->linkToRoute('_quotes_view', ['id' => 'quote.id'])
-                ->formatValue(fn (object $quote) => $quote->getQuoteId()),
+                ->formatValue(fn (?object $quote) => $quote ? $quote->getQuoteId() : '-'),
             StringColumn::new('status')
                 ->filter(ChoiceFilter::new('status', [
                     Job::STATUS_PENDING => 'Pending',
@@ -49,11 +49,11 @@ abstract class BaseJobGrid extends Grid
                     Job::STATUS_DONE => 'Done'
                 ])->multiple()),
             StringColumn::new('description')
-                ->truncate(50),
+                ->formatValue(fn (?string $value) => $value ? (strlen($value) > 50 ? substr($value, 0, 47) . '...' : $value) : ''),
             DateTimeColumn::new('scheduledDate')
                 ->label('Scheduled Date')
                 ->format('d M Y')
-                ->nullable(),
+                ->formatValue(fn (?\DateTimeInterface $value) => $value ? $value->format('d M Y') : '-'),
             DateTimeColumn::new('created')
                 ->format('d M Y')
                 ->filter(new DateRangeFilter('created'))

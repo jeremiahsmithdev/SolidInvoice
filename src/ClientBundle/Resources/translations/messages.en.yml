@@ -59,6 +59,7 @@ client:
             info: 'Info'
             quotes: 'Quotes'
             invoices: 'Invoices'
+            jobs: 'Jobs'
             payments: 'Payments'
         currency: 'Currency:'
     heading:

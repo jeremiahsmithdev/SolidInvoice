@@ -101,7 +101,7 @@
 
                         {% if job.scheduledDate %}
                             <dt class="col-sm-4">{{ "job.view.scheduled_date"|trans }}</dt>
-                            <dd class="col-sm-8">{{ job.scheduledDate|date('d F Y H:i') }}</dd>
+                            <dd class="col-sm-8">{{ job.scheduledDate|date('d F Y') }}</dd>
                         {% endif %}
 
                         <dt class="col-sm-4">{{ "job.view.created"|trans }}</dt>

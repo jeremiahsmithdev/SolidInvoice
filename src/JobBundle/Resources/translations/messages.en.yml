@@ -1,0 +1,93 @@
+job:
+    list:
+        title: Jobs
+        status_legend: 'Job Status Legend'
+    summary: 'Job Summary'
+    create: 'Create Job'
+    created: Created
+    title: 'Job #%id%'
+    description: Description
+    field:
+        status: Status
+        client: Client
+        quote: Quote
+        invoice: Invoice
+    scheduled_date: 'Scheduled Date'
+    back_to_list: 'Back to List'
+    save:
+        update: Update
+        cancel: Cancel
+        create: 'Create Job'
+    action:
+        edit:
+            success: 'Job updated successfully'
+        create:
+            success: 'Job created successfully'
+        print: 'Print'
+        pdf: 'PDF'
+    view:
+        toolbar:
+            edit: Edit
+            clone: Clone
+            delete: Delete
+            view_quote: 'View Quote'
+            view_invoice: 'View Invoice'
+            view_client: 'View Client'
+            start: 'Start Job'
+            complete: 'Complete Job'
+            reopen: 'Reopen Job'
+            download_pdf: 'Download PDF'
+        details: 'Job Details'
+        status: Status
+        client: Client
+        quote: Quote
+        invoice: Invoice
+        scheduled_date: 'Scheduled Date'
+        created: Created
+        updated: Updated
+        description: Description
+    clone:
+        success: 'Job cloned successfully'
+    client:
+        choose: 'Choose a client'
+        empty: 'You have not created any clients yet.'
+        create: 'Please add one now'
+    quote:
+        choose: 'Choose a quote'
+        empty: 'No quotes available for this client.'
+    no_clients:
+        title: 'No Clients Found'
+        message: 'You need to create at least one client before you can create a job.'
+    grid:
+        actions:
+            view: View
+            edit: Edit
+            delete: Delete
+    menu:
+        main: Jobs
+        list: 'List Jobs'
+        create: 'Create Job'
+        view: 'View Job'
+    status:
+        pending: Pending
+        in_progress: 'In Progress'
+        done: Done
+    stats:
+        count:
+            pending: '{0} Pending Jobs|{1} Pending Job|]1,Inf] Pending Jobs'
+            in_progress: '{0} In Progress Jobs|{1} Job In Progress|]1,Inf] Jobs In Progress'
+            done: '{0} Completed Jobs|{1} Completed Job|]1,Inf] Completed Jobs'
+    form:
+        quote:
+            help: 'Optionally link this job to a specific quote'
+        scheduled_date:
+            help: 'Date when this job is scheduled to be worked on'
+    transition:
+        action:
+            start: 'Job Started'
+            complete: 'Job Completed'
+            reopen: 'Job Reopened'
+
+jobs: Jobs
+search: Search
+title: 'messages'

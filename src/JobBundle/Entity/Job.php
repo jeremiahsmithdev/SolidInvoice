@@ -75,13 +75,12 @@ class Job implements Stringable
     #[Serialize\Groups(['job_api:read'])]
     private ?Ulid $id = null;
 
-    #[ORM\ManyToOne(targetEntity: Quote::class)]
-    #[ORM\JoinColumn(name: 'quote_id', referencedColumnName: 'id', nullable: false)]
-    #[Assert\NotNull]
+    #[ORM\ManyToOne(targetEntity: Quote::class, inversedBy: 'jobs')]
+    #[ORM\JoinColumn(name: 'quote_id', referencedColumnName: 'id', nullable: true)]
     #[Serialize\Groups(['job_api:read', 'job_api:write'])]
     private ?Quote $quote = null;
 
-    #[ORM\ManyToOne(targetEntity: Client::class)]
+    #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'jobs')]
     #[ORM\JoinColumn(name: 'client_id', referencedColumnName: 'id', nullable: false)]
     #[Assert\NotNull]
     #[Serialize\Groups(['job_api:read', 'job_api:write'])]
@@ -101,6 +100,10 @@ class Job implements Stringable
     #[ORM\Column(name: 'scheduled_date', type: Types::DATETIME_MUTABLE, nullable: true)]
     #[Serialize\Groups(['job_api:read', 'job_api:write'])]
     private ?DateTimeInterface $scheduledDate = null;
+
+    #[ORM\Column(name: 'job_id', type: Types::STRING, length: 255, nullable: true)]
+    #[Serialize\Groups(['job_api:read', 'job_api:write'])]
+    private ?string $jobId = null;
 
     #[ORM\ManyToOne(targetEntity: Invoice::class, inversedBy: 'jobs')]
     #[ORM\JoinColumn(name: 'invoice_id', referencedColumnName: 'id', nullable: true)]
@@ -180,6 +183,18 @@ class Job implements Stringable
     public function setInvoice(?Invoice $invoice): self
     {
         $this->invoice = $invoice;
+        return $this;
+    }
+
+    public function getJobId(): ?string
+    {
+        return $this->jobId;
+    }
+
+    public function setJobId(?string $jobId): self
+    {
+        $this->jobId = $jobId;
+        
         return $this;
     }
 

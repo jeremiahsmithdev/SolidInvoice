@@ -24,6 +24,11 @@
                         {{ icon('file-text-o') }} {{ "invoice.view.toolbar.view_quote"|trans }}
                     </a>
                 {% endif %}
+                {% if invoice.jobs|length > 0 %}
+                    <a href="{{ path('_jobs_view', {'id' : invoice.jobs.first.id}) }}" class="btn btn-secondary">
+                        {{ icon('tasks') }} {{ "invoice.view.toolbar.view_job"|trans }}
+                    </a>
+                {% endif %}
                 <a href="{{ path('_invoices_clone', {'id' : invoice.id}) }}" class="btn btn-secondary">
                     {{ icon('clone') }} {{ "invoice.view.toolbar.clone"|trans }}
                 </a>

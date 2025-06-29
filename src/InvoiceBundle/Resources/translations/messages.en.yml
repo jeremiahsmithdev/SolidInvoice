@@ -51,6 +51,7 @@ invoice:
             reopen: Re-Open
             clone: Clone
             view_quote: View Quote
+            view_job: View Job
         payments: Payments
     clone:
         success: 'Invoice cloned successfully'

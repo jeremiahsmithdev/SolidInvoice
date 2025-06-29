@@ -2,3 +2,6 @@ settings:
     save: Save
     saved:
         success: 'Settings saved successfully!'
+
+invoice:
+    recurring_invoices_enabled: 'Enable Recurring Invoices'

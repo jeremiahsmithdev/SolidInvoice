@@ -16,12 +16,21 @@ namespace SolidInvoice\InvoiceBundle\Menu;
 use InvalidArgumentException;
 use SolidInvoice\MenuBundle\Core\AuthenticatedMenu;
 use SolidInvoice\MenuBundle\ItemInterface;
+use SolidInvoice\SettingsBundle\SystemConfig;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Menu items for invoices.
  */
 class Builder extends AuthenticatedMenu
 {
+    public function __construct(
+        private readonly SystemConfig $systemConfig,
+        AuthorizationCheckerInterface $authorizationChecker
+    ) {
+        parent::__construct($authorizationChecker);
+    }
+
     /**
      * Menu builder for the invoice index.
      *
@@ -33,8 +42,12 @@ class Builder extends AuthenticatedMenu
 
         InvoiceMenu::list($menu);
         InvoiceMenu::create($menu);
-        RecurringInvoiceMenu::list($menu);
-        RecurringInvoiceMenu::create($menu);
+        
+        // Only show recurring invoice menu items if the feature is enabled (default: hidden)
+        if ($this->systemConfig->get('invoice/recurring_invoices_enabled') === '1') {
+            RecurringInvoiceMenu::list($menu);
+            RecurringInvoiceMenu::create($menu);
+        }
 
         $menu->addDivider();
     }

@@ -14,11 +14,20 @@ namespace SolidInvoice\InvoiceBundle\Twig\Components;
 use Brick\Math\Exception\MathException;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
+use SolidInvoice\CoreBundle\Traits\SaveableTrait;
+use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Form\Type\InvoiceType;
+use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\TaxBundle\Repository\TaxRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Uid\Ulid;
+use Symfony\Component\Workflow\WorkflowInterface;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
@@ -32,6 +41,7 @@ final class CreateInvoice extends AbstractController
 {
     use DefaultActionTrait;
     use LiveCollectionTrait;
+    use SaveableTrait;
 
     #[LiveProp(writable: true, fieldName: 'formData')]
     public Invoice $invoice;
@@ -43,6 +53,9 @@ final class CreateInvoice extends AbstractController
         private readonly ClientRepository $clientRepository,
         private readonly TotalCalculator $totalCalculator,
         private readonly TaxRepository $taxRepository,
+        private readonly WorkflowInterface $invoiceStateMachine,
+        private readonly RouterInterface $router,
+        private readonly MailerInterface $mailer,
     ) {
     }
 
@@ -73,6 +86,33 @@ final class CreateInvoice extends AbstractController
         $this->formValues['client'] = null;
     }
 
+    #[LiveAction]
+    public function saveInvoice(Request $request): RedirectResponse
+    {
+        $this->submitForm();
+        
+        /** @var Invoice $invoice */
+        $invoice = $this->getForm()->getData();
+        $action = $request->request->get('save');
+
+        if (! $invoice->getId() instanceof Ulid) {
+            $this->invoiceStateMachine->apply($invoice, Graph::TRANSITION_NEW);
+        }
+
+        if (Graph::STATUS_PENDING === $action || 'publish' === $action) {
+            $this->invoiceStateMachine->apply($invoice, Graph::TRANSITION_ACCEPT);
+        }
+
+        $this->save($invoice);
+
+        if (Graph::STATUS_PENDING === $action) {
+            $this->mailer->send(new InvoiceEmail($invoice));
+        }
+
+        $this->addFlash('success', 'invoice.create.success');
+
+        return $this->redirectToRoute('_invoices_view', ['id' => $invoice->getId()]);
+    }
 
     #[ExposeInTemplate]
     public function hasTax(): bool

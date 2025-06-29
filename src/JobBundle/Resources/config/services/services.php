@@ -34,5 +34,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services
         ->set('solidinvoice.job.menu.builder', 'SolidInvoice\\JobBundle\\Menu\\Builder')
-        ->tag('cs_core.menu', ['menu' => 'sidebar']);
+        ->tag('cs_core.menu', ['menu' => 'sidebar', 'method' => 'sidebar', 'priority' => 90]);
 };

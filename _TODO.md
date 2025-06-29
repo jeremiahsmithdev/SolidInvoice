@@ -3,4 +3,6 @@
 - [ ] Remove Recurring Invoices - option to enable in settings
 - [ ] Reorder side menu : Quotes, Invoices, Jobs, Clients, 
 - [ ] Save not working on quotes and invoices
+- [ ] Link addresses to jobs - display
+- [ ] Remove job id as form entry (automatically generated)
 

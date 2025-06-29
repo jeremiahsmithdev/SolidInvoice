@@ -43,6 +43,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             [
                 'menu' => 'sidebar',
                 'method' => 'sidebar',
+                'priority' => 100,
             ]
         );
 };

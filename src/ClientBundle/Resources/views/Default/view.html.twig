@@ -143,6 +143,11 @@
                                 {{ 'client.view.tabs.invoices'|trans }}
                             </a>
                         </li>
+                        <li role="presentation" class="nav-item">
+                            <a href="#jobs" aria-controls="jobs" role="tab" data-toggle="tab" class="nav-link">
+                                {{ 'client.view.tabs.jobs'|trans }}
+                            </a>
+                        </li>
                         {% if payments|length > 0 %}
                             <li role="presentation" class="nav-item">
                                 <a href="#payments" aria-controls="payments" role="tab" data-toggle="tab" class="nav-link">
@@ -163,6 +168,9 @@
                         </div>
                         <div role="tabpanel" class="tab-pane" id="invoices">
                             {% include "@SolidInvoiceClient/invoice_list.html.twig" %}
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="jobs">
+                            {% include "@SolidInvoiceClient/job_list.html.twig" %}
                         </div>
                         {% if payments|length > 0 %}
                             <div role="tabpanel" class="tab-pane" id="payments">

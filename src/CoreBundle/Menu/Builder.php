@@ -18,9 +18,15 @@ use SolidInvoice\MenuBundle\Core\AuthenticatedMenu;
 use SolidInvoice\MenuBundle\ItemInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class Builder extends AuthenticatedMenu
 {
+    public function __construct(AuthorizationCheckerInterface $authorizationChecker)
+    {
+        parent::__construct($authorizationChecker);
+    }
+
     /**
      * Build the user menu.
      *

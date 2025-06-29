@@ -15,6 +15,7 @@ use InvalidArgumentException;
 use Psr\Container\ContainerExceptionInterface;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator\IdGeneratorInterface;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\JobBundle\Entity\Job;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\DependencyInjection\Attribute\TaggedLocator;
@@ -42,6 +43,7 @@ final class BillingIdGenerator
         $settingSection = match (true) {
             $entity instanceof Invoice => 'invoice',
             $entity instanceof Quote => 'quote',
+            $entity instanceof Job => 'job',
             default => throw new InvalidArgumentException('Invalid entity type'),
         };
 

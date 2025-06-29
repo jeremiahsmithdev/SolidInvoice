@@ -44,6 +44,7 @@ quote:
             reopen: Re-Open
             clone: Clone
             view_invoice: View Invoice
+            view_job: View Job
         online: 'View this quote online at: %url%'
     clone:
         success: 'Quote cloned successfully'
