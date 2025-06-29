@@ -1,0 +1,110 @@
+.compact-client-form {
+    border: 1px solid #dee2e6;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    margin-bottom: 1rem;
+    
+    .card-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+        padding: 0.75rem 1.25rem;
+        
+        .card-title {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #495057;
+        }
+    }
+    
+    .card-body {
+        padding: 1.25rem;
+        
+        .form-group {
+            margin-bottom: 1rem;
+            
+            label {
+                font-weight: 500;
+                margin-bottom: 0.5rem;
+                color: #495057;
+                
+                .text-danger {
+                    color: #dc3545 !important;
+                }
+            }
+            
+            .form-control {
+                border: 1px solid #ced4da;
+                border-radius: 0.25rem;
+                padding: 0.375rem 0.75rem;
+                font-size: 0.875rem;
+                
+                &:focus {
+                    border-color: #007bff;
+                    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+                }
+                
+                &.is-invalid {
+                    border-color: #dc3545;
+                    
+                    &:focus {
+                        border-color: #dc3545;
+                        box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+                    }
+                }
+            }
+            
+            .invalid-feedback {
+                display: block;
+                width: 100%;
+                margin-top: 0.25rem;
+                font-size: 0.75rem;
+                color: #dc3545;
+            }
+        }
+    }
+    
+    .card-footer {
+        background-color: #f8f9fa;
+        border-top: 1px solid #dee2e6;
+        padding: 0.75rem 1.25rem;
+        
+        .btn {
+            margin-right: 0.5rem;
+            
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+    }
+}
+
+// Smooth expand/collapse using Stimulus controller
+#compact-client-form {
+    // Add a smooth transition for any remaining style changes
+    transition: margin 0.3s ease-out;
+    margin-bottom: 1rem;
+    
+    // Ensure smooth transitions work properly
+    &.d-none {
+        margin-bottom: 0;
+    }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+    .compact-client-form {
+        .card-body {
+            padding: 1rem;
+            
+            .row {
+                margin-left: -0.5rem;
+                margin-right: -0.5rem;
+                
+                [class*="col-"] {
+                    padding-left: 0.5rem;
+                    padding-right: 0.5rem;
+                }
+            }
+        }
+    }
+}

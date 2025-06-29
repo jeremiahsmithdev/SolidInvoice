@@ -1,0 +1,76 @@
+<div {{ attributes.defaults({
+    id: 'compact-client-form',
+    class: this.isVisible ? '' : 'd-none',
+    'data-controller': 'compact-client-form',
+    'data-compact-client-form-visible-value': this.isVisible ? 'true' : 'false',
+    'data-compact-client-form-target': 'container'
+}) }}>
+    <div class="card card-primary card-outline compact-client-form">
+        <div class="card-header">
+            <h5 class="card-title">{{ 'Add New Client'|trans }}</h5>
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-action="live#action compact-client-form#toggle" data-live-action-param="toggle" aria-expanded="false">
+                    {{ icon('times') }}
+                </button>
+            </div>
+        </div>
+        
+        <form id="compact-client-form-actual" action="/clients/xhr/create-compact" method="POST">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="firstName" class="control-label required">{{ 'First Name'|trans }}</label>
+                            <input type="text" id="firstName" name="firstName" class="form-control" maxlength="125" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="lastName" class="control-label">{{ 'Last Name'|trans }}</label>
+                            <input type="text" id="lastName" name="lastName" class="form-control" maxlength="125">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="email" class="control-label required">{{ 'Email'|trans }}</label>
+                            <input type="email" id="email" name="email" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="phone" class="control-label">{{ 'Phone'|trans }}</label>
+                            <input type="tel" id="phone" name="phone" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="street1" class="control-label">{{ 'Address'|trans }}</label>
+                    <input type="text" id="street1" name="street1" class="form-control" placeholder="{{ 'Street Address'|trans }}">
+                    <div class="row mt-2">
+                        <div class="col-md-4">
+                            <input type="text" id="city" name="city" class="form-control" placeholder="{{ 'City'|trans }}">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" id="state" name="state" class="form-control" placeholder="{{ 'State/Province'|trans }}">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" id="zip" name="zip" class="form-control" placeholder="{{ 'ZIP/Postal Code'|trans }}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card-footer">
+                <button type="submit" class="btn btn-success">
+                    {{ icon('plus') }} {{ 'Create Client'|trans }}
+                </button>
+                <button type="button" class="btn btn-secondary" id="cancel-compact-form">
+                    {{ 'Cancel'|trans }}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

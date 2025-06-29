@@ -73,6 +73,7 @@ final class CreateQuote extends AbstractController
         $this->formValues['client'] = null;
     }
 
+
     #[ExposeInTemplate]
     public function hasTax(): bool
     {

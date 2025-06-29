@@ -3,6 +3,9 @@ import 'bootstrap';
 
 import { startStimulusApp } from '@symfony/stimulus-bridge';
 
+// Import compact client form functionality
+import './js/compact-client-form';
+
 import CheckboxSelectAll from '@stimulus-components/checkbox-select-all';
 import PasswordVisibility from '@stimulus-components/password-visibility';
 import Clipboard from '@stimulus-components/clipboard';

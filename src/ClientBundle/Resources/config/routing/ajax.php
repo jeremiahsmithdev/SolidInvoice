@@ -12,6 +12,7 @@ declare(strict_types=1);
  */
 
 use SolidInvoice\ClientBundle\Action\Ajax\Credit;
+use SolidInvoice\ClientBundle\Action\Ajax\CreateClientCompact;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 return static function (RoutingConfigurator $routingConfigurator): void {
@@ -29,4 +30,9 @@ return static function (RoutingConfigurator $routingConfigurator): void {
         ->add('_xhr_clients_delete', '/delete/{id}')
         ->controller(\SolidInvoice\ClientBundle\Action\Ajax\Delete::class)
         ->methods(['DELETE']);
+
+    $routingConfigurator
+        ->add('_xhr_clients_create_compact', '/create-compact')
+        ->controller(CreateClientCompact::class)
+        ->methods(['POST']);
 };

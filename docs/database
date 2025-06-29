@@ -1,0 +1,31 @@
+# tables
+addresses                          payment_methods
+api_token_history                  payments
+api_tokens                         quote_contact
+app_config                         quote_lines
+client_credit                      quotes
+clients                            recurring_invoices
+companies                          recurring_options
+contact_details                    recurringinvoice_contacts
+contact_types                      reset_password_request
+contacts                           security_token
+invoice_contact                    tax_rates
+invoice_lines                      user_company
+invoices                           user_invitations
+migration_versions                 usernotification_transportsetting
+notification_transport_setting     users
+notification_user_setting          version
+
+sqlite> PRAGMA table_info(clients);
+0|id|BLOB|1||1
+1|company_id|BLOB|1||0
+2|firstName|VARCHAR(125)|1||0
+3|lastName|VARCHAR(125)|0|NULL|0
+4|email|VARCHAR(255)|1||0
+5|website|VARCHAR(125)|0|NULL|0
+6|status|VARCHAR(25)|1||0
+7|archived|BOOLEAN|0|NULL|0
+8|created|DATETIME|1||0
+9|updated|DATETIME|1||0
+sqlite>
+
