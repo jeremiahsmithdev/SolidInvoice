@@ -15,6 +15,7 @@ namespace SolidInvoice\QuoteBundle\Listener;
 
 use Doctrine\Persistence\ManagerRegistry;
 use JsonException;
+use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use SolidInvoice\InvoiceBundle\Model\Graph as InvoiceGraph;
 use SolidInvoice\JobBundle\Entity\Job;
@@ -41,7 +42,8 @@ final class WorkFlowSubscriber implements EventSubscriberInterface
         private readonly WorkflowInterface $invoiceStateMachine,
         private readonly NotificationManager $notification,
         private readonly QuoteMailer $quoteMailer,
-        private readonly JobRepository $jobRepository
+        private readonly JobRepository $jobRepository,
+        private readonly BillingIdGenerator $billingIdGenerator
     ) {
     }
 
@@ -71,6 +73,7 @@ final class WorkFlowSubscriber implements EventSubscriberInterface
         $job->setStatus(Job::STATUS_PENDING);
         $job->setDescription($quote->getTitle() ?? ('Job for Quote #' . $quote->getId()));
         $job->setCompany($quote->getCompany());
+        $job->setJobId($this->billingIdGenerator->generate($job, ['field' => 'jobId']));
 
         $this->jobRepository->save($job, true);
     }

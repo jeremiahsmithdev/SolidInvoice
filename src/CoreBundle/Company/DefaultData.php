@@ -92,6 +92,12 @@ final class DefaultData
             ['setting_key' => 'quote/id_generation/strategy', 'setting_value' => 'auto_increment', 'description' => '', 'field_type' => BillingIdConfigurationType::class],
             ['setting_key' => 'quote/id_generation/id_prefix', 'setting_value' => '', 'description' => 'Example: QUOT-', 'field_type' => TextType::class],
             ['setting_key' => 'quote/id_generation/id_suffix', 'setting_value' => '', 'description' => 'Example: -QUOT', 'field_type' => TextType::class],
+
+            // Job
+            ['setting_key' => 'job/id_generation/strategy', 'setting_value' => 'auto_increment', 'description' => '', 'field_type' => BillingIdConfigurationType::class],
+            ['setting_key' => 'job/id_generation/id_prefix', 'setting_value' => 'JOB-', 'description' => 'Example: JOB-', 'field_type' => TextType::class],
+            ['setting_key' => 'job/id_generation/id_suffix', 'setting_value' => '', 'description' => 'Example: -JOB', 'field_type' => TextType::class],
+            ['setting_key' => 'job/auto_create_on_quote_acceptance', 'setting_value' => '1', 'description' => 'Automatically create a job when a quote is accepted', 'field_type' => CheckboxType::class],
         ];
 
         foreach ($appConfig as $setting) {

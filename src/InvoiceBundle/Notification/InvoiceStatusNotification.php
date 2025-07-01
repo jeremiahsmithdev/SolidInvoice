@@ -17,11 +17,14 @@ use SolidInvoice\NotificationBundle\Attribute\AsNotification;
 use SolidInvoice\NotificationBundle\Notification\NotificationMessage;
 use Symfony\Bridge\Twig\Mime\NotificationEmail;
 use Symfony\Component\Notifier\Message\EmailMessage;
+use Symfony\Component\Notifier\Message\SmsMessage;
+use Symfony\Component\Notifier\Notification\SmsNotificationInterface;
 use Symfony\Component\Notifier\Recipient\EmailRecipientInterface;
+use Symfony\Component\Notifier\Recipient\SmsRecipientInterface;
 use Twig\Environment;
 
 #[AsNotification(name: self::EVENT)]
-class InvoiceStatusNotification extends NotificationMessage
+class InvoiceStatusNotification extends NotificationMessage implements SmsNotificationInterface
 {
     public const EVENT = 'invoice_status_update';
 
@@ -52,5 +55,26 @@ class InvoiceStatusNotification extends NotificationMessage
         }
 
         return $message;
+    }
+
+    public function asSmsMessage(SmsRecipientInterface $recipient, ?string $transport = null): SmsMessage
+    {
+        $params = $this->getParameters();
+        
+        // Format a concise SMS message (max 160 chars)
+        $smsText = sprintf(
+            'Invoice #%s (%s) status: %s. Amount: %s',
+            $params['invoice']['number'] ?? 'N/A',
+            $params['invoice']['client']['name'] ?? 'Customer',
+            $params['newStatus'] ?? 'Updated',
+            $params['invoice']['total']['amount'] ?? '0.00'
+        );
+        
+        // Truncate if too long
+        if (strlen($smsText) > 160) {
+            $smsText = substr($smsText, 0, 157) . '...';
+        }
+        
+        return new SmsMessage($recipient->getPhone(), $smsText, $transport);
     }
 }

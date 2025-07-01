@@ -14,6 +14,8 @@ declare(strict_types=1);
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Model\Graph as InvoiceGraph;
+use SolidInvoice\JobBundle\Entity\Job;
+use SolidInvoice\JobBundle\Model\Graph as JobGraph;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Model\Graph as QuoteGraph;
 use Symfony\Config\FrameworkConfig;
@@ -289,4 +291,61 @@ return static function (FrameworkConfig $config): void {
             QuoteGraph::STATUS_PENDING,
         ])
         ->to([QuoteGraph::STATUS_ARCHIVED]);
+
+    $jobWorkflow = $workflow
+        ->workflows('job')
+        ->type('state_machine')
+        ->supports([
+            Job::class,
+        ])
+        ->place(JobGraph::STATUS_PENDING)
+        ->place(JobGraph::STATUS_IN_PROGRESS)
+        ->place(JobGraph::STATUS_DONE)
+        ->place(JobGraph::STATUS_CANCELLED)
+        ->place(JobGraph::STATUS_ARCHIVED);
+
+    $jobWorkflow
+        ->markingStore()
+        ->type('method')
+        ->property('status');
+
+    $jobWorkflow
+        ->auditTrail()
+        ->enabled(true);
+
+    $jobWorkflow
+        ->transition()
+        ->name(JobGraph::TRANSITION_START)
+        ->from([JobGraph::STATUS_PENDING])
+        ->to([JobGraph::STATUS_IN_PROGRESS]);
+
+    $jobWorkflow
+        ->transition()
+        ->name(JobGraph::TRANSITION_COMPLETE)
+        ->from([JobGraph::STATUS_IN_PROGRESS])
+        ->to([JobGraph::STATUS_DONE]);
+
+    $jobWorkflow
+        ->transition()
+        ->name(JobGraph::TRANSITION_CANCEL)
+        ->from([
+            JobGraph::STATUS_PENDING,
+            JobGraph::STATUS_IN_PROGRESS,
+        ])
+        ->to([JobGraph::STATUS_CANCELLED]);
+
+    $jobWorkflow
+        ->transition()
+        ->name(JobGraph::TRANSITION_REOPEN)
+        ->from([JobGraph::STATUS_CANCELLED])
+        ->to([JobGraph::STATUS_PENDING]);
+
+    $jobWorkflow
+        ->transition()
+        ->name(JobGraph::TRANSITION_ARCHIVE)
+        ->from([
+            JobGraph::STATUS_DONE,
+            JobGraph::STATUS_CANCELLED,
+        ])
+        ->to([JobGraph::STATUS_ARCHIVED]);
 };

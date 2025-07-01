@@ -16,6 +16,7 @@ namespace SolidInvoice\QuoteBundle\Tests\Listener;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
+use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
@@ -79,8 +80,15 @@ final class WorkFlowSubscriberTest extends KernelTestCase
                 self::assertSame($client, $job->getClient());
                 self::assertSame(Job::STATUS_PENDING, $job->getStatus());
                 self::assertSame('Test Quote for Tree Removal', $job->getDescription());
+                self::assertNotNull($job->getJobId(), 'Job ID should be generated');
                 return null;
             });
+
+        $billingIdGenerator = M::mock(BillingIdGenerator::class);
+        $billingIdGenerator->shouldReceive('generate')
+            ->once()
+            ->with(M::type(Job::class), ['field' => 'jobId'])
+            ->andReturn('JOB-001');
 
         $subscriber = new WorkFlowSubscriber(
             $this->registry,
@@ -88,7 +96,8 @@ final class WorkFlowSubscriberTest extends KernelTestCase
             $stateMachine,
             $notification,
             new QuoteMailer($stateMachine, M::mock(MailerInterface::class), $notification),
-            $jobRepository
+            $jobRepository,
+            $billingIdGenerator
         );
 
         $subscriber->onQuoteAccepted(new Event($quote, new Marking(['pending' => 1]), new Transition('accept', 'pending', 'accepted'), M::mock(WorkflowInterface::class)));
@@ -108,6 +117,7 @@ final class WorkFlowSubscriberTest extends KernelTestCase
             ->zeroOrMoreTimes();
 
         $jobRepository = M::mock(JobRepository::class);
+        $billingIdGenerator = M::mock(BillingIdGenerator::class);
         
         $subscriber = new WorkFlowSubscriber(
             $this->registry,
@@ -115,7 +125,8 @@ final class WorkFlowSubscriberTest extends KernelTestCase
             $stateMachine,
             $notification,
             new QuoteMailer($stateMachine, M::mock(MailerInterface::class), $notification),
-            $jobRepository
+            $jobRepository,
+            $billingIdGenerator
         );
 
         $subscriber->onWorkflowTransitionApplied(new Event($quote, new Marking(['pending' => 1]), new Transition('archive', 'pending', 'archived'), M::mock(WorkflowInterface::class)));

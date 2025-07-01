@@ -68,6 +68,8 @@ class JobType extends AbstractType
                         'Pending' => Job::STATUS_PENDING,
                         'In Progress' => Job::STATUS_IN_PROGRESS,
                         'Done' => Job::STATUS_DONE,
+                        'Cancelled' => Job::STATUS_CANCELLED,
+                        'Archived' => Job::STATUS_ARCHIVED,
                     ],
                     'required' => true,
                 ]

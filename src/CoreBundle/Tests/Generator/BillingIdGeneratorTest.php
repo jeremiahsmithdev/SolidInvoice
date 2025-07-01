@@ -18,6 +18,7 @@ use Psr\Container\NotFoundExceptionInterface;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator\IdGeneratorInterface;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\JobBundle\Entity\Job;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 
@@ -137,8 +138,8 @@ final class BillingIdGeneratorTest extends TestCase
             ->method('get')
             ->willReturnMap([
                 ['invoice/id_generation/strategy', 'auto_increment'],
-                ['invoice/id_generation/prefix', 'INV-'],
-                ['invoice/id_generation/suffix', '-00'],
+                ['invoice/id_generation/id_prefix', 'INV-'],
+                ['invoice/id_generation/id_suffix', '-00'],
             ]);
 
         $generator = new BillingIdGenerator(
@@ -153,5 +154,45 @@ final class BillingIdGeneratorTest extends TestCase
         );
 
         self::assertSame('INV-10-00', $generator->generate(new Invoice()));
+    }
+
+    public function testGenerateJobIdWithPrefixAndSuffix(): void
+    {
+        $autoIncrementGenerator = $this->createMock(IdGeneratorInterface::class);
+        $randomNumberGenerator = $this->createMock(IdGeneratorInterface::class);
+        $timestampGenerator = $this->createMock(IdGeneratorInterface::class);
+
+        $autoIncrementGenerator->expects(self::once())
+            ->method('generate')
+            ->willReturn('25');
+
+        $randomNumberGenerator->expects(self::never())
+            ->method('generate');
+
+        $timestampGenerator->expects(self::never())
+            ->method('generate');
+
+        $systemConfig = $this->createMock(SystemConfig::class);
+
+        $systemConfig->expects(self::exactly(3))
+            ->method('get')
+            ->willReturnMap([
+                ['job/id_generation/strategy', 'auto_increment'],
+                ['job/id_generation/id_prefix', 'JOB-'],
+                ['job/id_generation/id_suffix', '-TEST'],
+            ]);
+
+        $generator = new BillingIdGenerator(
+            new ServiceLocator(
+                [
+                    'auto_increment' => static fn () => $autoIncrementGenerator,
+                    'random_number' => static fn () => $randomNumberGenerator,
+                    'timestamp' => static fn () => $timestampGenerator,
+                ],
+            ),
+            $systemConfig,
+        );
+
+        self::assertSame('JOB-25-TEST', $generator->generate(new Job()));
     }
 }

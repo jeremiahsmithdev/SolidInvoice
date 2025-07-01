@@ -64,6 +64,8 @@ class Job implements Stringable
     final public const STATUS_PENDING = 'pending';
     final public const STATUS_IN_PROGRESS = 'in_progress';
     final public const STATUS_DONE = 'done';
+    final public const STATUS_CANCELLED = 'cancelled';
+    final public const STATUS_ARCHIVED = 'archived';
     
     use TimeStampable;
     use CompanyAware;
@@ -88,7 +90,7 @@ class Job implements Stringable
 
     #[ORM\Column(name: 'status', type: Types::STRING, length: 25)]
     #[Assert\NotBlank]
-    #[Assert\Choice(choices: [self::STATUS_PENDING, self::STATUS_IN_PROGRESS, self::STATUS_DONE])]
+    #[Assert\Choice(choices: [self::STATUS_PENDING, self::STATUS_IN_PROGRESS, self::STATUS_DONE, self::STATUS_CANCELLED, self::STATUS_ARCHIVED])]
     #[Serialize\Groups(['job_api:read', 'job_api:write'])]
     #[ApiProperty(writable: true)]
     private string $status = self::STATUS_PENDING;
@@ -211,6 +213,16 @@ class Job implements Stringable
     public function isDone(): bool
     {
         return $this->status === self::STATUS_DONE;
+    }
+
+    public function isCancelled(): bool
+    {
+        return $this->status === self::STATUS_CANCELLED;
+    }
+
+    public function isArchived(): bool
+    {
+        return $this->status === self::STATUS_ARCHIVED;
     }
 
     public function __toString(): string

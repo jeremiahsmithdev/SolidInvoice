@@ -41,6 +41,8 @@ final class JobTest extends TestCase
         self::assertTrue($job->isPending());
         self::assertFalse($job->isInProgress());
         self::assertFalse($job->isDone());
+        self::assertFalse($job->isCancelled());
+        self::assertFalse($job->isArchived());
     }
 
     public function testJobStatusTransitions(): void
@@ -64,6 +66,26 @@ final class JobTest extends TestCase
         self::assertTrue($job->isDone());
         self::assertFalse($job->isPending());
         self::assertFalse($job->isInProgress());
+        self::assertFalse($job->isCancelled());
+        self::assertFalse($job->isArchived());
+
+        // Test cancelled status
+        $job->setStatus(Job::STATUS_CANCELLED);
+        self::assertSame(Job::STATUS_CANCELLED, $job->getStatus());
+        self::assertTrue($job->isCancelled());
+        self::assertFalse($job->isPending());
+        self::assertFalse($job->isInProgress());
+        self::assertFalse($job->isDone());
+        self::assertFalse($job->isArchived());
+
+        // Test archived status
+        $job->setStatus(Job::STATUS_ARCHIVED);
+        self::assertSame(Job::STATUS_ARCHIVED, $job->getStatus());
+        self::assertTrue($job->isArchived());
+        self::assertFalse($job->isPending());
+        self::assertFalse($job->isInProgress());
+        self::assertFalse($job->isDone());
+        self::assertFalse($job->isCancelled());
     }
 
     public function testJobToString(): void

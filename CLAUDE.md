@@ -84,6 +84,7 @@ The application is organized into 15+ Symfony bundles, each representing a busin
 - **Multi-Tenancy**: Company-based data isolation
 
 ### File Structure Example
+**NOTE**: Read the /docs/NAVIGATION.md file for a more in-depth explanation of how to navigate the codebase
 ```
 src/
 ├── ClientBundle/
