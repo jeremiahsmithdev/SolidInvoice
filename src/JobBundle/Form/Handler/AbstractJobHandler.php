@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\JobBundle\Form\Handler;
 
-use Exception;
 use Generator;
+use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
 use SolidInvoice\JobBundle\Entity\Job;
@@ -37,18 +37,25 @@ abstract class AbstractJobHandler implements FormHandlerInterface, FormHandlerRe
 
     public function __construct(
         private readonly RouterInterface $router,
+        private readonly BillingIdGenerator $billingIdGenerator,
     ) {
     }
 
     public function getForm(FormFactoryInterface $factory, Options $options)
     {
-        return $factory->create(JobType::class, $options->get('job'), $options->get('form_options', []));
+        return $factory->create(JobType::class, $options->get('job'), $options->get('form_options') ?? []);
     }
 
     public function onSuccess(FormRequest $formRequest, $data): ?Response
     {
         /** @var Job $job */
         $job = $data;
+
+        // Auto-generate job ID if not set
+        if (null === $job->getJobId()) {
+            $jobId = $this->billingIdGenerator->generate($job, ['field' => 'jobId']);
+            $job->setJobId($jobId);
+        }
 
         $this->save($job);
 
