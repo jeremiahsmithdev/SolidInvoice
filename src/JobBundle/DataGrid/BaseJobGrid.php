@@ -52,8 +52,7 @@ abstract class BaseJobGrid extends Grid
                 ->formatValue(fn (?string $value) => $value ? (strlen($value) > 50 ? substr($value, 0, 47) . '...' : $value) : ''),
             DateTimeColumn::new('scheduledDate')
                 ->label('Scheduled Date')
-                ->format('d M Y')
-                ->formatValue(fn (?\DateTimeInterface $value) => $value ? $value->format('d M Y') : '-'),
+                ->format('d M Y'),
             DateTimeColumn::new('created')
                 ->format('d M Y')
                 ->filter(new DateRangeFilter('created'))

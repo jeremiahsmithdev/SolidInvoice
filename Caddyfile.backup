@@ -1,0 +1,6 @@
+
+symbiotek.com.au {
+    root * /var/www/symbiotek/SolidInvoice/public
+    php_fastcgi unix//run/php/php8.3-fpm.sock
+    file_server
+}

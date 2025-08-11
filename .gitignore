@@ -1,3 +1,7 @@
+.DS_Store
+mkdocs.yml
+scratchpad
+
 public/static
 public/bundles
 public/css/*

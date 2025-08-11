@@ -1,7 +1,7 @@
 <div {{ attributes }}>
     {% set currency = quote.client.currency|default(null) %}
 
-    {{ form_start(form, {'attr': {'id': 'quote-form'}}) }}
+    {{ form_start(form, {'action': path('_quotes_create'), 'method': 'POST', 'attr': {'id': 'quote-form'}}) }}
     
     <!-- Compact Client Form at top -->
     <twig:CompactClientForm />
@@ -14,18 +14,37 @@
 
                         <div class="col-12">
                             <div class="row">
-                                <div class="col-6">
-                                    <div id="client-selection-section"{{ form.client.vars.data is not empty ? ' class="d-none"' }}>
-                                        {{ form_row(form.client, {attr: {'data-action': 'live#$render'}}) }}
+                                <div class="col-6" 
+                                     data-controller="client-details" 
+                                     data-client-details-api-token-value="569a168393da35304d9f2a2e0e3fa4305db7efcd9e8e3d36d6b9ca1a9d8c6269"
+                                     data-client-details-api-url-value="http://localhost:3000">
+                                    <div id="client-selection-section">
+                                        {{ form_row(form.client, {attr: {'class': 'client-select'}}) }}
                                         <div class="mt-2">
                                             <button type="button" class="btn btn-outline-primary btn-sm" onclick="toggleCompactClientForm(event)">
                                                 {{ icon('plus') }} {{ 'Add New Client'|trans }}
                                             </button>
                                         </div>
                                     </div>
-                                    {% if form.client.vars.data %}
-                                        {% include "@SolidInvoiceClient/Ajax/info.html.twig" with {'client' : form.client.vars.data, 'form' : form} %}
-                                    {% endif %}
+                                    
+                                    <div data-client-details-target="details" class="mt-3 p-3 bg-light border rounded" style="display: none;">
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <h5 data-client-details-target="clientName">Client Name</h5>
+                                                <div data-client-details-target="contact">
+                                                    <!-- Contact details will be populated by controller -->
+                                                </div>
+                                                <div data-client-details-target="address">
+                                                    <!-- Address details will be populated by controller -->
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 text-right">
+                                                <a href="#" class="btn btn-sm btn-outline-secondary" data-action="click->client-details#clearClient">
+                                                    {{ "change"|trans }}
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="col-3 offset-3 text-right">
@@ -202,21 +221,21 @@
                         <div class="form-actions clearfix">
                             {% if isEdit %}
                             <div class="float-right">
-                                <button type="submit" class="btn btn-info" name="save" value="save" data-action="live#action" data-live-action-param="saveQuote">
+                                <button type="submit" class="btn btn-info" name="save" value="save">
                                     {{ icon('check') }} {{ "Save Quote"|trans }}
                                 </button>
                             </div>
                             {% else %}
                                 <div class="float-left">
-                                    <button type="submit" class="btn btn-success" name="save" value="pending" data-action="live#action" data-live-action-param="saveQuote">
+                                    <button type="submit" class="btn btn-success" name="save" value="pending">
                                         {{ icon('envelope', ['o']) }} {{ ("quote.save.send")|trans }}
                                     </button>
-                                    <button type="submit" class="btn btn-info" name="save" value="publish" data-action="live#action" data-live-action-param="saveQuote">
+                                    <button type="submit" class="btn btn-info" name="save" value="publish">
                                         {{ icon('check') }} {{ "Save Quote"|trans }}
                                     </button>
                                 </div>
                                 <div class="float-right">
-                                    <button type="submit" class="btn btn-primary" name="save" value="save" data-action="live#action" data-live-action-param="saveQuote">
+                                    <button type="submit" class="btn btn-primary" name="save" value="save">
                                         {{ icon('save') }} {{ "quote.save.draft"|trans }}
                                     </button>
                                 </div>

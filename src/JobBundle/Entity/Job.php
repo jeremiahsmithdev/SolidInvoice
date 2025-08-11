@@ -79,6 +79,7 @@ class Job implements Stringable
 
     #[ORM\ManyToOne(targetEntity: Quote::class, inversedBy: 'jobs')]
     #[ORM\JoinColumn(name: 'quote_id', referencedColumnName: 'id', nullable: true)]
+    #[Assert\NotNull(message: 'A quote must be selected for the job.', groups: ['job_form'])]
     #[Serialize\Groups(['job_api:read', 'job_api:write'])]
     private ?Quote $quote = null;
 
@@ -130,6 +131,12 @@ class Job implements Stringable
     public function setQuote(?Quote $quote): self
     {
         $this->quote = $quote;
+        
+        // Auto-assign client from quote if no client is currently set
+        if ($quote && null === $this->client) {
+            $this->client = $quote->getClient();
+        }
+        
         return $this;
     }
 

@@ -18,23 +18,39 @@
                 <div class="card-header">
                     <h3 class="card-title">{{ 'job.create'|trans }}</h3>
                 </div>
-                <div class="card-body">
+                <div class="card-body" 
+                     data-controller="quote-details" 
+                     data-quote-details-api-token-value="569a168393da35304d9f2a2e0e3fa4305db7efcd9e8e3d36d6b9ca1a9d8c6269"
+                     data-quote-details-api-url-value="http://localhost:3000">
                     {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
                         
-                        <div class="form-group row">
-                            {{ form_label(form.client, null, {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
-                            <div class="col-sm-9">
-                                {{ form_widget(form.client, {'attr': {'class': 'form-control'}}) }}
-                                {{ form_errors(form.client) }}
-                            </div>
-                        </div>
-
                         <div class="form-group row">
                             {{ form_label(form.quote, null, {'label_attr': {'class': 'col-sm-3 col-form-label'}}) }}
                             <div class="col-sm-9">
                                 {{ form_widget(form.quote, {'attr': {'class': 'form-control'}}) }}
                                 {{ form_errors(form.quote) }}
                                 <small class="form-text text-muted">{{ 'job.form.quote.help'|trans }}</small>
+                                
+                                <div data-quote-details-target="details" class="mt-3 p-3 bg-light border rounded" style="display: none;">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h6 class="text-primary mb-2">Client Information</h6>
+                                            <strong>Contact:</strong>
+                                            <div data-quote-details-target="contact" class="text-muted mb-2"></div>
+                                            <strong>Address:</strong>
+                                            <div data-quote-details-target="address" class="text-muted"></div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6 class="text-success mb-2">Quote Information</h6>
+                                            <strong>Quote ID:</strong>
+                                            <div data-quote-details-target="quoteId" class="text-muted mb-2"></div>
+                                            <strong>Total Amount:</strong>
+                                            <div data-quote-details-target="total" class="text-muted mb-2"></div>
+                                            <strong>Description:</strong>
+                                            <div data-quote-details-target="description" class="text-muted"></div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -80,3 +96,7 @@
         </div>
     </div>
 {% endblock content %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock javascripts %}

@@ -1,0 +1,30 @@
+
+⏺ You're absolutely right! Let me check how the job submission form handles this. The key insight is that we should follow the exact same architecture as the job creation form.
+
+⏺ Read(src/JobBundle/Resources/views/Default/create.html.twig)
+  ⎿  Read 102 lines (ctrl+r to expand)
+
+⏺ Perfect! Now I see the key differences. The job form is much simpler and uses the Form Handler architecture. You're absolutely right - we should match this exactly:
+
+  Key Differences:
+
+  Job Form (CORRECT):
+
+  1. ✅ Simple form rendering - no complex tables or line items
+  2. ✅ Direct template rendering - no Live Components
+  3. ✅ Form Handler provides variables - controller handles template data
+  4. ✅ Basic Stimulus controller - just for quote details display
+  5. ✅ Traditional form submission - {{ form_start(form) }} with default action
+
+  Quote/Invoice Forms (OVERCOMPLICATED):
+
+  1. ❌ Complex Live Component with line items, tax calculations, etc.
+  2. ❌ Heavy dynamic functionality that should be server-side
+  3. ❌ Trying to bypass Live Components while keeping their complexity
+
+  The Real Question:
+
+  Why do quote/invoice forms have Live Components at all? Let me check if there are simpler Form Handler-based controllers we should be using instead:
+
+⏺ Task(Find form handlers architecture)
+  ⎿  Done (34 tool uses · 61.5k tokens · 2m 39.4s)

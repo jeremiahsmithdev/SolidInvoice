@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\JobBundle\Form\Type;
 
-use SolidInvoice\ClientBundle\Form\ClientAutocompleteType;
 use SolidInvoice\JobBundle\Entity\Job;
 use SolidInvoice\QuoteBundle\Form\QuoteAutocompleteType;
 use Symfony\Component\Form\AbstractType;
@@ -29,17 +28,6 @@ class JobType extends AbstractType
     {
         $builder
             ->add(
-                'client',
-                ClientAutocompleteType::class,
-                [
-                    'attr' => [
-                        'class' => 'client-select',
-                    ],
-                    'placeholder' => 'job.client.choose',
-                    'required' => true,
-                ]
-            )
-            ->add(
                 'quote',
                 QuoteAutocompleteType::class,
                 [
@@ -47,7 +35,7 @@ class JobType extends AbstractType
                         'class' => 'quote-select',
                     ],
                     'placeholder' => 'job.quote.choose',
-                    'required' => false,
+                    'required' => true,
                 ]
             )
             ->add(
@@ -92,6 +80,7 @@ class JobType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Job::class,
+            'validation_groups' => ['Default', 'job_form'],
         ]);
     }
 

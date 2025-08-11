@@ -51,6 +51,11 @@ abstract class AbstractJobHandler implements FormHandlerInterface, FormHandlerRe
         /** @var Job $job */
         $job = $data;
 
+        // Auto-set client based on quote relationship
+        if ($job->getQuote() && null === $job->getClient()) {
+            $job->setClient($job->getQuote()->getClient());
+        }
+
         // Auto-generate job ID if not set
         if (null === $job->getJobId()) {
             $jobId = $this->billingIdGenerator->generate($job, ['field' => 'jobId']);
